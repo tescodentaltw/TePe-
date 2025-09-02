@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牙刷旅行組訂購頁面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+        }
+        .section-header {
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .btn-reset {
+            transition: transform 0.2s ease-in-out;
+        }
+        .btn-reset:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="container mx-auto bg-white p-6 sm:p-10 rounded-3xl shadow-lg border border-gray-200">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6 text-gray-800">牙刷旅行組訂購頁面</h1>
+        <p class="text-center text-gray-600 mb-8">請選擇您所需的數量與品項，系統將會自動為您計算總價。</p>
+
+        <!-- Section 1: Quantity -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-gray-700 section-header">第一步：訂購數量</h2>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center">
+                <label for="kitQuantity" class="text-lg font-medium mr-4">旅行組所需數量：</label>
+                <input type="number" id="kitQuantity" value="1" min="1" class="w-full sm:w-40 mt-2 sm:mt-0 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200" oninput="updatePage()">
+            </div>
+        </div>
+
+        <!-- Section 2: Main Brush -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-gray-700 section-header">第二步：選擇主要牙刷 (13款中選1)</h2>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center">
+                <label for="mainBrushSelect" class="text-lg font-medium mr-4">請從此處選擇牙刷：</label>
+                <select id="mainBrushSelect" class="w-full sm:w-60 mt-2 sm:mt-0 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200" onchange="updatePage()">
+                    <option value="" disabled selected>-- 請從下拉式選單選擇 --</option>
+                </select>
+                <div id="mainBrushImage" class="mt-4 sm:mt-0 sm:ml-6 w-full max-w-[200px] h-auto rounded-xl overflow-hidden shadow-md border-2 border-transparent transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Section 3: Free Gifts -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-gray-700 section-header">第三步：選擇免費贈品</h2>
+            <p id="giftInfo" class="text-gray-600 mb-4">*溫馨提示：免費贈品總數量不能超過您訂購的旅行組數量。</p>
+            <div id="giftContainer" class="space-y-4">
+                <!-- Dynamic gift selection rows will be added here -->
+            </div>
+            <p id="giftQuantityWarning" class="text-red-500 font-bold mt-4 hidden">警告：您選擇的贈品總數量已超過訂購的旅行組數量！</p>
+        </div>
+
+        <!-- Section 4: Add-ons -->
+        <div class="mb-8 p-6 bg-gray-50 rounded-2xl border border-gray-200">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-gray-700 section-header">第四步：選擇加購品項</h2>
+            <div id="addonContainer" class="space-y-4">
+                <!-- Dynamic addon selection rows will be added here -->
+            </div>
+        </div>
+
+        <!-- Total Price -->
+        <div class="p-6 bg-blue-50 rounded-2xl border-4 border-blue-200 shadow-inner">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-700 mb-4">訂單總計</h2>
+            <div class="flex flex-col space-y-2">
+                <div class="flex justify-between items-center text-lg sm:text-xl">
+                    <span class="font-medium">旅行組總價：</span>
+                    <span id="mainBrushTotal" class="font-bold text-gray-800">$0</span>
+                </div>
+                <div class="flex justify-between items-center text-lg sm:text-xl">
+                    <span class="font-medium">加購品項總價：</span>
+                    <span id="addonTotal" class="font-bold text-gray-800">$0</span>
+                </div>
+                <div class="flex justify-between items-center text-xl sm:text-2xl font-bold pt-4 border-t-2 border-blue-300">
+                    <span class="text-blue-700">訂單總金額：</span>
+                    <span id="grandTotal" class="text-blue-700 text-3xl">$0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <button onclick="resetPage()" class="btn-reset bg-gray-500 text-white px-8 py-4 rounded-xl shadow-lg font-bold hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-300 transition-all duration-300">
+                重設頁面
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const products = {
+            mainBrushes: [
+                { name: '牙刷A', price: 100, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷A' },
+                { name: '牙刷B', price: 120, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷B' },
+                { name: '牙刷C', price: 90, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷C' },
+                { name: '牙刷D', price: 115, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷D' },
+                { name: '牙刷E', price: 85, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷E' },
+                { name: '牙刷F', price: 105, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷F' },
+                { name: '牙刷G', price: 130, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷G' },
+                { name: '牙刷H', price: 95, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷H' },
+                { name: '牙刷I', price: 125, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷I' },
+                { name: '牙刷J', price: 110, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷J' },
+                { name: '牙刷K', price: 140, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷K' },
+                { name: '牙刷L', price: 80, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷L' },
+                { name: '牙刷M', price: 118, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷M' }
+            ],
+            gifts: [
+                { name: '輕鬆剔XS/S', image: 'https://placehold.co/200x200/cccccc/333333?text=輕鬆剔XS/S' },
+                { name: '輕鬆剔M/L', image: 'https://placehold.co/200x200/cccccc/333333?text=輕鬆剔M/L' },
+                { name: 'L型牙間刷0.4mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.4mm' },
+                { name: 'L型牙間刷0.45mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.45mm' },
+                { name: 'L型牙間刷0.5mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.5mm' },
+                { name: 'L型牙間刷0.6mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.6mm' },
+                { name: 'L型牙間刷0.7mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.7mm' },
+                { name: 'L型牙間刷0.8mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.8mm' },
+                { name: 'I型牙間刷(僅限0號0.4mm粉紅色)', image: 'https://placehold.co/200x200/cccccc/333333?text=I型牙間刷' },
+                { name: '小膨脹牙線', image: 'https://placehold.co/200x200/cccccc/333333?text=小膨脹牙線' }
+            ],
+            addons: [
+                { name: '牙線棒', price: 50, image: 'https://placehold.co/200x200/cccccc/333333?text=牙線棒' },
+                { name: '漱口水', price: 75, image: 'https://placehold.co/200x200/cccccc/333333?text=漱口水' },
+                { name: '牙膏', price: 60, image: 'https://placehold.co/200x200/cccccc/333333?text=牙膏' },
+                { name: '牙刷收納盒', price: 45, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷收納盒' }
+            ]
+        };
+
+        const giftTiers = {
+            100: ['輕鬆剔XS/S', '輕鬆剔M/L'],
+            200: ['輕鬆剔XS/S', '輕鬆剔M/L', 'L型牙間刷0.4mm', 'L型牙間刷0.45mm', 'L型牙間刷0.5mm', 'L型牙間刷0.6mm', 'L型牙間刷0.7mm', 'L型牙間刷0.8mm', 'I型牙間刷(僅限0號0.4mm粉紅色)'],
+            300: ['輕鬆剔XS/S', '輕鬆剔M/L', 'L型牙間刷0.4mm', 'L型牙間刷0.45mm', 'L型牙間刷0.5mm', 'L型牙間刷0.6mm', 'L型牙間刷0.7mm', 'L型牙間刷0.8mm', 'I型牙間刷(僅限0號0.4mm粉紅色)', '小膨脹牙線']
+        };
+
+        const addonCount = 3;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initSelect(document.getElementById('mainBrushSelect'), products.mainBrushes);
+            renderAddons();
+            updatePage();
+        });
+
+        function initSelect(selectElement, optionsArray) {
+            optionsArray.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.name;
+                option.textContent = item.name;
+                selectElement.appendChild(option);
+            });
+        }
+
+        function renderGifts(quantity) {
+            const giftContainer = document.getElementById('giftContainer');
+            giftContainer.innerHTML = '';
+            
+            let availableGifts = [];
+            if (quantity >= 300) {
+                availableGifts = giftTiers[300];
+            } else if (quantity >= 200) {
+                availableGifts = giftTiers[200];
+            } else if (quantity >= 100) {
+                availableGifts = giftTiers[100];
+            } else {
+                giftContainer.innerHTML = '<p class="text-center text-gray-500">訂購滿100組旅行組即可選擇免費贈品。</p>';
+                return;
+            }
+
+            const uniqueGifts = [...new Set(availableGifts)];
+            
+            uniqueGifts.forEach(giftName => {
+                const gift = products.gifts.find(g => g.name === giftName);
+                if (!gift) return;
+
+                const row = document.createElement('div');
+                row.className = 'flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-4 bg-gray-100 rounded-xl border border-gray-200';
+                
+                const selectDiv = document.createElement('div');
+                selectDiv.className = 'flex-grow w-full';
+                const selectLabel = document.createElement('span');
+                selectLabel.className = 'text-lg font-medium mr-4';
+                selectLabel.textContent = '贈品名稱：';
+                
+                const selectElement = document.createElement('select');
+                selectElement.className = 'w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200';
+                const option = document.createElement('option');
+                option.value = gift.name;
+                option.textContent = gift.name;
+                selectElement.appendChild(option);
+                selectElement.value = gift.name;
+                selectElement.disabled = true;
+                
+                selectDiv.appendChild(selectLabel);
+                selectDiv.appendChild(selectElement);
+                
+                const quantityDiv = document.createElement('div');
+                quantityDiv.className = 'flex items-center space-x-2';
+                const quantityLabel = document.createElement('label');
+                quantityLabel.className = 'font-medium whitespace-nowrap';
+                quantityLabel.textContent = '數量：';
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.min = 0;
+                quantityInput.value = 0;
+                quantityInput.className = 'w-20 p-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 gift-quantity-input';
+                quantityInput.oninput = updatePage;
+                
+                quantityDiv.appendChild(quantityLabel);
+                quantityDiv.appendChild(quantityInput);
+
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'w-20 h-20 rounded-xl overflow-hidden shadow-md border-2 border-transparent transition-all duration-300';
+                imageDiv.innerHTML = `<img src="${gift.image}" alt="${gift.name}" class="w-full h-full object-cover">`;
+
+                row.appendChild(imageDiv);
+                row.appendChild(selectDiv);
+                row.appendChild(quantityDiv);
+                giftContainer.appendChild(row);
+            });
+        }
+        
+        function renderAddons() {
+            const addonContainer = document.getElementById('addonContainer');
+            addonContainer.innerHTML = '';
+            
+            for (let i = 0; i < addonCount; i++) {
+                const row = document.createElement('div');
+                row.className = 'flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-4 bg-gray-100 rounded-xl border border-gray-200';
+                
+                const selectDiv = document.createElement('div');
+                selectDiv.className = 'flex-grow w-full';
+                const selectLabel = document.createElement('span');
+                selectLabel.className = 'text-lg font-medium mr-4';
+                selectLabel.textContent = '加購品項：';
+                
+                const selectElement = document.createElement('select');
+                selectElement.className = 'w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 addon-select';
+                selectElement.onchange = updatePage;
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '-- 請從下拉式選單選擇 --';
+                selectElement.appendChild(defaultOption);
+                
+                products.addons.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.name;
+                    option.textContent = item.name;
+                    selectElement.appendChild(option);
+                });
+                
+                selectDiv.appendChild(selectLabel);
+                selectDiv.appendChild(selectElement);
+                
+                const quantityDiv = document.createElement('div');
+                quantityDiv.className = 'flex items-center space-x-2';
+                const quantityLabel = document.createElement('label');
+                quantityLabel.className = 'font-medium whitespace-nowrap';
+                quantityLabel.textContent = '數量：';
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.min = 0;
+                quantityInput.value = 0;
+                quantityInput.className = 'w-20 p-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 addon-quantity-input';
+                quantityInput.oninput = updatePage;
+                
+                quantityDiv.appendChild(quantityLabel);
+                quantityDiv.appendChild(quantityInput);
+
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'w-20 h-20 rounded-xl overflow-hidden shadow-md border-2 border-transparent transition-all duration-300';
+                
+                const priceSpan = document.createElement('span');
+                priceSpan.className = 'text-lg font-bold w-20 text-right';
+                priceSpan.textContent = '$0';
+                
+                row.appendChild(imageDiv);
+                row.appendChild(selectDiv);
+                row.appendChild(quantityDiv);
+                row.appendChild(priceSpan);
+                
+                addonContainer.appendChild(row);
+            }
+        }
+
+        function updatePage() {
+            const kitQuantity = parseInt(document.getElementById('kitQuantity').value) || 0;
+            
+            // Validate kit quantity
+            if (kitQuantity < 1) {
+                document.getElementById('kitQuantity').value = 1;
+                return;
+            }
+
+            renderGifts(kitQuantity);
+            updateTotals();
+        }
+
+        function updateTotals() {
+            const kitQuantity = parseInt(document.getElementById('kitQuantity').value) || 0;
+
+            // Update main brush total
+            const mainBrushSelect = document.getElementById('mainBrushSelect');
+            const selectedMainBrush = products.mainBrushes.find(item => item.name === mainBrushSelect.value);
+            let mainBrushPrice = selectedMainBrush ? selectedMainBrush.price : 0;
+            let mainBrushTotal = mainBrushPrice * kitQuantity;
+            document.getElementById('mainBrushTotal').textContent = `$${mainBrushTotal}`;
+            
+            const mainBrushImage = document.getElementById('mainBrushImage');
+            if (selectedMainBrush) {
+                 mainBrushImage.innerHTML = `<img src="${selectedMainBrush.image}" alt="${selectedMainBrush.name}" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://placehold.co/200x200/cccccc/333333?text=圖片載入失敗'">`;
+            } else {
+                 mainBrushImage.innerHTML = '';
+            }
+
+            // Update addon totals
+            const addonSelects = document.querySelectorAll('.addon-select');
+            const addonQuantities = document.querySelectorAll('.addon-quantity-input');
+            const addonPrices = document.querySelectorAll('#addonContainer > div > span');
+            let addonTotal = 0;
+            
+            for (let i = 0; i < addonCount; i++) {
+                const selectedAddon = products.addons.find(item => item.name === addonSelects[i].value);
+                const addonQuantity = parseInt(addonQuantities[i].value) || 0;
+                let currentAddonTotal = 0;
+
+                if (selectedAddon) {
+                    currentAddonTotal = selectedAddon.price * addonQuantity;
+                    addonTotal += currentAddonTotal;
+                    
+                    // Update addon image
+                    const addonImageDiv = addonSelects[i].parentNode.parentNode.querySelector('div:first-child');
+                    addonImageDiv.innerHTML = `<img src="${selectedAddon.image}" alt="${selectedAddon.name}" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://placehold.co/200x200/cccccc/333333?text=圖片載入失敗'">`;
+                } else {
+                    const addonImageDiv = addonSelects[i].parentNode.parentNode.querySelector('div:first-child');
+                    addonImageDiv.innerHTML = '';
+                }
+                
+                addonPrices[i].textContent = `$${currentAddonTotal}`;
+            }
+            document.getElementById('addonTotal').textContent = `$${addonTotal}`;
+            
+            // Validate gift quantity
+            const giftQuantityInputs = document.querySelectorAll('.gift-quantity-input');
+            const totalGiftQuantity = Array.from(giftQuantityInputs).reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
+            const giftWarning = document.getElementById('giftQuantityWarning');
+
+            if (totalGiftQuantity > kitQuantity) {
+                giftWarning.classList.remove('hidden');
+            } else {
+                giftWarning.classList.add('hidden');
+            }
+
+            // Update grand total
+            const grandTotal = mainBrushTotal + addonTotal;
+            document.getElementById('grandTotal').textContent = `$${grandTotal}`;
+        }
+
+        function resetPage() {
+            document.getElementById('kitQuantity').value = 1;
+            document.getElementById('mainBrushSelect').value = '';
+            const giftInputs = document.querySelectorAll('.gift-quantity-input');
+            giftInputs.forEach(input => input.value = 0);
+            const addonSelects = document.querySelectorAll('.addon-select');
+            addonSelects.forEach(select => select.value = '');
+            const addonInputs = document.querySelectorAll('.addon-quantity-input');
+            addonInputs.forEach(input => input.value = 0);
+            updatePage();
+        }
+    </script>
+</body>
+</html>
