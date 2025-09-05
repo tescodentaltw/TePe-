@@ -3,599 +3,504 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TePe 旅行組訂購</title>
+    <title>旅行組訂購</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            color: #005ea4;
             background-image: url('https://i.meee.com.tw/UCK30VJ.jpg');
             background-size: cover;
-            background-attachment: fixed;
             background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #005ea4; /* Default text color */
         }
         .container {
-            max-width: 900px;
-            background-color: #d3f3f5;
+            max-width: 960px;
         }
-        .section-box {
-            background-color: #8aced6;
+        .scroll-container {
+            overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
         }
-        .section-header {
-            border-bottom: 2px solid white;
+        .scroll-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
-        .addon-box {
-            background-color: #d3f3f5;
+        .product-card {
+            min-width: 180px;
         }
-        .btn {
-            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        .quantity-input {
+            appearance: textfield;
+            -moz-appearance: textfield;
+            -webkit-appearance: textfield;
+            border-color: #8aced6;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        #total-box {
-            background-color: #005ea4;
-        }
-        #total-box .line {
-            border-color: white;
-        }
-        .text-input, .select-input {
-            color: #005ea4;
-            background-color: white;
-            border: 1px solid #e2e8f0;
-        }
-        .select-input {
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23005ea4'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.7em top 50%;
-            background-size: 1.5em;
+            margin: 0;
+        }
+        .arrow-button {
+            background-color: #005ea4;
+            color: white;
+            border-radius: 9999px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        .arrow-button:hover {
+            background-color: #004e93;
         }
     </style>
 </head>
 <body class="p-4 sm:p-8">
-    <div class="container mx-auto p-6 sm:p-10 rounded-3xl shadow-lg border border-gray-200">
-        <!-- TePe Logo -->
+    <div class="container mx-auto">
         <div class="flex justify-center mb-8">
-            <img src="https://i.meee.com.tw/4Ojn0aJ.png" alt="TePe Logo" class="h-16 w-auto">
+            <img src="https://i.meee.com.tw/4Ojn0aJ.png" alt="TePe Logo" class="h-16 sm:h-20" onerror="this.onerror=null;this.src='https://placehold.co/100x100?text=TePe'">
         </div>
+    </div>
+    
+    <!-- 總計金額與標題 (合併) -->
+    <div class="container mx-auto bg-[#8aced6] rounded-3xl shadow-xl p-6 sm:p-10 my-8">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-[#005ea4] mb-4">旅行組訂購</h1>
+        <p class="text-sm sm:text-base text-center text-[#005ea4] mb-8">
+            請選擇您所需的數量與品項，系統將會自動為您計算總價。此價格已包含旅行組外盒、獨家診所名稱貼紙(會為您設計)。有購買滿100/200/300組都會有不同的贈品可供挑選。
+        </p>
+    </div>
 
-        <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6 text-[#005ea4]">旅行組訂購</h1>
-        <p class="text-center text-[#005ea4] mb-8">請選擇您所需的數量與品項，系統將會自動為您計算總價。</p>
+    <!-- 訂購區塊 -->
+    <div class="container mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-10 my-8">
 
-        <!-- Section 1: Quantity -->
-        <div class="mb-8 p-6 section-box rounded-2xl border border-[#8aced6]">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#005ea4] section-header">第一步：訂購數量</h2>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center">
-                <label for="kitQuantity" class="text-lg font-medium mr-4">旅行組所需數量：</label>
-                <input type="number" id="kitQuantity" value="1" min="1" class="w-full sm:w-40 mt-2 sm:mt-0 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 text-input" oninput="updatePage()">
+        <!-- 第一步：選擇主要牙刷與數量 -->
+        <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-[#005ea4] mb-4">第一步：選擇主要牙刷</h2>
+            <p class="text-sm text-[#005ea4] mb-4">請向右滑動瀏覽所有牙刷，或點擊左右箭頭。</p>
+            <div class="relative flex items-center">
+                <button class="arrow-button absolute left-0 z-10" onclick="scrollContainer('main-toothbrushes-container', -200)">
+                    &#8249;
+                </button>
+                <div id="main-toothbrushes-container" class="scroll-container flex space-x-6 pb-4 w-full">
+                    <!-- 動態生成的牙刷卡片將會在此處 -->
+                </div>
+                <button class="arrow-button absolute right-0 z-10" onclick="scrollContainer('main-toothbrushes-container', 200)">
+                    &#8250;
+                </button>
             </div>
         </div>
 
-        <!-- Section 2: Main Brush -->
-        <div class="mb-8 p-6 section-box rounded-2xl border border-[#8aced6]">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#005ea4] section-header">第二步：選擇主要牙刷 (13款中選1)</h2>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center">
-                <label for="mainBrushSelect" class="text-lg font-medium mr-4">請從此處選擇牙刷：</label>
-                <select id="mainBrushSelect" class="w-full sm:w-60 mt-2 sm:mt-0 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 select-input" onchange="updatePage()">
-                    <option value="" disabled selected>-- 請從下拉式選單選擇 --</option>
-                </select>
-                <div id="mainBrushImage" class="mt-4 sm:mt-0 sm:ml-6 w-full max-w-[200px] h-auto rounded-xl overflow-hidden shadow-md border-2 border-transparent transition-all duration-300"></div>
+        <!-- 第二步：選擇免費贈品 -->
+        <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-[#005ea4] mb-2">第二步：選擇免費贈品</h2>
+            <p class="text-sm text-[#005ea4] mb-4">
+                您最多可選擇 <span id="gift-limit" class="font-semibold text-[#e50031]">0</span> 份免費贈品。
+                <br>目前已選擇 <span id="gifts-selected" class="font-semibold text-[#e50031]">0</span> 份。
+            </p>
+            <div class="relative flex items-center">
+                <button class="arrow-button absolute left-0 z-10" onclick="scrollContainer('free-gifts-container', -200)">
+                    &#8249;
+                </button>
+                <div id="free-gifts-container" class="scroll-container flex space-x-6 pb-4 w-full">
+                    <!-- 動態生成的贈品卡片將會在此處 -->
+                </div>
+                <button class="arrow-button absolute right-0 z-10" onclick="scrollContainer('free-gifts-container', 200)">
+                    &#8250;
+                </button>
             </div>
         </div>
 
-        <!-- Section 3: Free Gifts -->
-        <div class="mb-8 p-6 section-box rounded-2xl border border-[#8aced6]">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#005ea4] section-header">第三步：選擇免費贈品</h2>
-            <p id="giftInfo" class="text-[#005ea4] mb-4">*溫馨提示：免費贈品總數量不能超過您訂購的旅行組數量。</p>
-            <div id="giftContainer" class="space-y-4">
-                <!-- Dynamic gift selection rows will be added here -->
-            </div>
-            <p id="giftQuantityWarning" class="text-red-500 font-bold mt-4 hidden">警告：您選擇的贈品總數量已超過訂購的旅行組數量！</p>
-        </div>
-
-        <!-- Section 4: Add-ons -->
-        <div class="mb-8 p-6 section-box rounded-2xl border border-[#8aced6]">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#005ea4] section-header">第四步：選擇加購品項</h2>
-            <div id="addonContainer" class="space-y-4">
-                <!-- Dynamic addon selection rows will be added here -->
+        <!-- 第三步：選擇加購品項 -->
+        <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-[#005ea4] mb-4">第三步：選擇加購品項</h2>
+            <p class="text-sm text-[#005ea4] mb-4">
+                請向右滑動瀏覽所有加購品項，或點擊左右箭頭。
+                <br>
+                <span class="text-[#e50031]">這些品項需額外付費。</span>
+            </p>
+            <div class="relative flex items-center">
+                <button class="arrow-button absolute left-0 z-10" onclick="scrollContainer('addon-items-container', -200)">
+                    &#8249;
+                </button>
+                <div id="addon-items-container" class="scroll-container flex space-x-6 pb-4 w-full">
+                    <!-- 動態生成的加購品項卡片將會在此處 -->
+                </div>
+                <button class="arrow-button absolute right-0 z-10" onclick="scrollContainer('addon-items-container', 200)">
+                    &#8250;
+                </button>
             </div>
         </div>
         
-        <!-- Section 5: Contact Info -->
-        <div class="mb-8 p-6 section-box rounded-2xl border border-[#8aced6]">
-            <h2 class="text-xl sm:text-2xl font-bold mb-4 text-[#005ea4] section-header">第五步：聯繫資訊</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="flex items-center space-x-2">
-                    <label for="fullName" class="text-lg font-medium">姓名：</label>
-                    <input type="text" id="fullName" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 text-input" placeholder="請填寫姓名">
-                    <select id="genderSelect" class="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 select-input">
-                        <option value="小姐">小姐</option>
-                        <option value="先生">先生</option>
-                        <option value="不公開">不公開</option>
-                    </select>
-                </div>
+        <!-- 聯繫資訊 -->
+        <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
+            <h2 class="text-2xl font-bold text-[#005ea4] mb-4">聯繫資訊</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[#005ea4]">
                 <div>
-                    <label for="clinicName" class="text-lg font-medium">診所名稱：</label>
-                    <input type="text" id="clinicName" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 text-input" placeholder="請填寫診所名稱">
-                </div>
-                <div>
-                    <label for="phone" class="text-lg font-medium">聯絡電話：</label>
-                    <input type="tel" id="phone" class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 text-input" placeholder="請填寫聯絡電話">
-                </div>
-                <div>
-                    <label for="citySelect" class="text-lg font-medium">診所地址：</label>
-                    <div class="flex space-x-2">
-                        <select id="citySelect" class="w-1/2 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 select-input" onchange="updateDistrictSelect()">
-                            <option value="" disabled selected>-- 請選擇縣市 --</option>
-                        </select>
-                        <select id="districtSelect" class="w-1/2 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 select-input">
-                            <option value="" disabled selected>-- 請選擇區 --</option>
+                    <label for="name" class="block text-sm font-medium mb-1">姓名</label>
+                    <div class="flex items-center">
+                        <input type="text" id="name" class="w-full p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800">
+                        <select id="gender" class="ml-2 p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800 bg-white">
+                            <option value="小姐">小姐</option>
+                            <option value="先生">先生</option>
+                            <option value="不公開">不公開</option>
                         </select>
                     </div>
-                    <input type="text" id="addressDetail" class="w-full p-3 mt-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 text-input" placeholder="請填寫詳細地址">
+                </div>
+                <div>
+                    <label for="clinic-name" class="block text-sm font-medium mb-1">診所名稱</label>
+                    <input type="text" id="clinic-name" class="w-full p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800">
+                </div>
+                <div>
+                    <label for="phone" class="block text-sm font-medium mb-1">聯絡電話</label>
+                    <input type="tel" id="phone" class="w-full p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800">
+                </div>
+                <div>
+                    <label for="city" class="block text-sm font-medium mb-1">診所地址</label>
+                    <div class="flex space-x-2">
+                        <select id="city" class="w-1/2 p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800 bg-white">
+                            <option value="">請選擇縣市</option>
+                        </select>
+                        <select id="district" class="w-1/2 p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800 bg-white">
+                            <option value="">請選擇區</option>
+                        </select>
+                    </div>
+                    <input type="text" id="address-detail" placeholder="詳細地址" class="w-full mt-2 p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800">
                 </div>
             </div>
         </div>
 
-        <!-- Total Price -->
-        <div id="total-box" class="p-6 rounded-2xl border-4 border-white shadow-inner text-white">
-            <h2 class="text-2xl sm:text-3xl font-bold mb-4">訂單總計</h2>
-            <div class="flex flex-col space-y-2">
-                <div class="flex justify-between items-center text-lg sm:text-xl">
+        <!-- 訂單總計區塊 -->
+        <div class="bg-[#005ea4] border border-[#005ea4] rounded-2xl p-6 mb-8 text-white">
+            <h2 class="text-2xl font-bold text-white text-center mb-4">訂單總計</h2>
+            <div class="space-y-2">
+                <div class="flex justify-between border-b border-white pb-2">
                     <span class="font-medium">旅行組總價：</span>
-                    <span id="mainBrushTotal" class="font-bold">$0</span>
+                    <span id="main-total" class="font-bold">$0</span>
                 </div>
-                <div class="flex justify-between items-center text-lg sm:text-xl">
+                <div class="flex justify-between border-b border-white pb-2">
                     <span class="font-medium">加購品項總價：</span>
-                    <span id="addonTotal" class="font-bold">$0</span>
+                    <span id="addon-total" class="font-bold">$0</span>
                 </div>
-                <div class="flex justify-between items-center text-xl sm:text-2xl font-bold pt-4 line border-t-2 border-white">
+                <div class="flex justify-between text-2xl font-bold pt-2">
                     <span>訂單總金額：</span>
-                    <span id="grandTotal" class="text-3xl">$0</span>
+                    <span id="grand-total">$0</span>
                 </div>
             </div>
         </div>
 
-        <div class="mt-8 flex justify-center space-x-4">
-            <button onclick="resetPage()" class="btn bg-[#8aced6] text-[#005ea4] px-8 py-4 rounded-xl shadow-lg font-bold hover:bg-[#a6d8e2] focus:outline-none focus:ring-4 focus:ring-[#8aced6] transition-all duration-300">
+        <!-- 按鈕區塊 -->
+        <div class="flex justify-center space-x-4">
+            <button id="reset-btn" class="bg-[#8aced6] hover:bg-[#72b8c9] text-[#005ea4] font-bold py-2 px-6 rounded-full transition-colors">
                 重置
             </button>
-            <button onclick="submitOrder()" class="btn bg-[#005ea4] text-white px-8 py-4 rounded-xl shadow-lg font-bold hover:bg-[#004a82] focus:outline-none focus:ring-4 focus:ring-[#005ea4] transition-all duration-300">
+            <button id="submit-btn" class="bg-[#005ea4] hover:bg-[#004e93] text-white font-bold py-2 px-6 rounded-full transition-colors">
                 提交
             </button>
         </div>
+    </div>
+    
+    <!-- 版權資訊 -->
+    <div class="container mx-auto text-center text-gray-700 text-xs mt-8">
+        TePe 緹碧瑞典專業口腔護理品牌 Copyright © 2022 TESCO DENTAL TW All RIGHTS RESERVED
+    </div>
 
-        <!-- Copyright Info -->
-        <div class="mt-12 text-center text-xs text-gray-500">
-            <p>TePe 緹碧瑞典專業口腔護理品牌</p>
-            <p>Copyright © 2022 TESCO DENTAL TW All RIGHTS RESERVED</p>
+    <!-- 彈窗訊息 -->
+    <div id="message-box" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg p-6 shadow-xl text-center max-w-sm mx-4">
+            <p id="message-text" class="text-lg font-semibold text-gray-800 mb-4"></p>
+            <button id="close-message" class="bg-[#005ea4] hover:bg-[#004e93] text-white font-bold py-2 px-4 rounded-full transition-colors">
+                好的
+            </button>
         </div>
     </div>
 
     <script>
-        const products = {
-            mainBrushes: [
-                { name: '牙刷A', price: 100, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷A' },
-                { name: '牙刷B', price: 120, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷B' },
-                { name: '牙刷C', price: 90, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷C' },
-                { name: '牙刷D', price: 115, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷D' },
-                { name: '牙刷E', price: 85, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷E' },
-                { name: '牙刷F', price: 105, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷F' },
-                { name: '牙刷G', price: 130, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷G' },
-                { name: '牙刷H', price: 95, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷H' },
-                { name: '牙刷I', price: 125, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷I' },
-                { name: '牙刷J', price: 110, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷J' },
-                { name: '牙刷K', price: 140, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷K' },
-                { name: '牙刷L', price: 80, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷L' },
-                { name: '牙刷M', price: 118, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷M' }
-            ],
-            gifts: [
-                { name: '輕鬆剔XS/S', image: 'https://placehold.co/200x200/cccccc/333333?text=輕鬆剔XS/S' },
-                { name: '輕鬆剔M/L', image: 'https://placehold.co/200x200/cccccc/333333?text=輕鬆剔M/L' },
-                { name: '牙刷保護蓋', image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷保護蓋' },
-                { name: 'L型牙間刷0.4mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.4mm' },
-                { name: 'L型牙間刷0.45mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.45mm' },
-                { name: 'L型牙間刷0.5mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.5mm' },
-                { name: 'L型牙間刷0.6mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.6mm' },
-                { name: 'L型牙間刷0.7mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.7mm' },
-                { name: 'L型牙間刷0.8mm', image: 'https://placehold.co/200x200/cccccc/333333?text=L型牙間刷0.8mm' },
-                { name: 'I型牙間刷(僅限0號0.4mm粉紅色)', image: 'https://placehold.co/200x200/cccccc/333333?text=I型牙間刷' },
-                { name: '小膨脹牙線', image: 'https://placehold.co/200x200/cccccc/333333?text=小膨脹牙線' }
-            ],
-            addons: [
-                { name: '牙線棒', price: 50, image: 'https://placehold.co/200x200/cccccc/333333?text=牙線棒' },
-                { name: '漱口水', price: 75, image: 'https://placehold.co/200x200/cccccc/333333?text=漱口水' },
-                { name: '牙膏', price: 60, image: 'https://placehold.co/200x200/cccccc/333333?text=牙膏' },
-                { name: '牙刷收納盒', price: 45, image: 'https://placehold.co/200x200/cccccc/333333?text=牙刷收納盒' }
-            ]
-        };
-
-        const giftTiers = {
-            100: ['輕鬆剔XS/S', '輕鬆剔M/L', '牙刷保護蓋'],
-            200: ['輕鬆剔XS/S', '輕鬆剔M/L', '牙刷保護蓋', 'L型牙間刷0.4mm', 'L型牙間刷0.45mm', 'L型牙間刷0.5mm', 'L型牙間刷0.6mm', 'L型牙間刷0.7mm', 'L型牙間刷0.8mm', 'I型牙間刷(僅限0號0.4mm粉紅色)'],
-            300: ['輕鬆剔XS/S', '輕鬆剔M/L', '牙刷保護蓋', 'L型牙間刷0.4mm', 'L型牙間刷0.45mm', 'L型牙間刷0.5mm', 'L型牙間刷0.6mm', 'L型牙間刷0.7mm', 'L型牙間刷0.8mm', 'I型牙間刷(僅限0號0.4mm粉紅色)', '小膨脹牙線']
-        };
-
-        const taiwanCities = {
-            '台北市': ['中正區', '大同區', '中山區', '松山區', '大安區', '萬華區', '信義區', '士林區', '北投區', '內湖區', '南港區', '文山區'],
-            '新北市': ['萬里區', '金山區', '板橋區', '汐止區', '深坑區', '石碇區', '瑞芳區', '平溪區', '雙溪區', '貢寮區', '新店區', '坪林區', '烏來區', '永和區', '中和區', '土城區', '三峽區', '樹林區', '鶯歌區', '三重區', '新莊區', '泰山區', '林口區', '蘆洲區', '五股區', '八里區', '淡水區', '三芝區', '石門區'],
-            '桃園市': ['中壢區', '平鎮區', '龍潭區', '楊梅區', '新屋區', '觀音區', '桃園區', '龜山區', '八德區', '大溪區', '復興區', '大園區', '蘆竹區'],
-            '新竹市': ['東區', '北區', '香山區'],
-            '新竹縣': ['竹北市', '竹東鎮', '新埔鎮', '關西鎮', '湖口鄉', '新豐鄉', '芎林鄉', '橫山鄉', '北埔鄉', '寶山鄉', '峨眉鄉', '尖石鄉', '五峰鄉'],
-            '苗栗縣': ['苗栗市', '通霄鎮', '苑裡鎮', '竹南鎮', '頭份市', '後龍鎮', '卓蘭鎮', '大湖鄉', '公館鄉', '銅鑼鄉', '南庄鄉', '頭屋鄉', '三義鄉', '西湖鄉', '造橋鄉', '三灣鄉', '獅潭鄉', '泰安鄉'],
-            '台中市': ['中區', '東區', '南區', '西區', '北區', '北屯區', '西屯區', '南屯區', '太平區', '大里區', '霧峰區', '烏日區', '豐原區', '后里區', '石岡區', '東勢區', '和平區', '新社區', '潭子區', '大雅區', '神岡區', '大肚區', '沙鹿區', '龍井區', '梧棲區', '清水區', '大甲區', '外埔區', '大安區'],
-            '彰化縣': ['彰化市', '員林市', '和美鎮', '鹿港鎮', '溪湖鎮', '田中鎮', '北斗鎮', '二林鎮', '線西鄉', '伸港鄉', '福興鄉', '秀水鄉', '花壇鄉', '芬園鄉', '大村鄉', '埔心鄉', '永靖鄉', '社頭鄉', '二水鄉', '田尾鄉', '埤頭鄉', '溪州鄉', '竹塘鄉', '大城鄉', '芳苑鄉', '埔鹽鄉'],
-            '南投縣': ['南投市', '埔里鎮', '草屯鎮', '竹山鎮', '集集鎮', '名間鄉', '鹿谷鄉', '中寮鄉', '魚池鄉', '國姓鄉', '水里鄉', '信義鄉', '仁愛鄉'],
-            '雲林縣': ['斗六市', '斗南鎮', '虎尾鎮', '西螺鎮', '土庫鎮', '北港鎮', '古坑鄉', '大埤鄉', '莿桐鄉', '林內鄉', '二崙鄉', '崙背鄉', '麥寮鄉', '東勢鄉', '褒忠鄉', '臺西鄉', '元長鄉', '四湖鄉', '口湖鄉', '水林鄉'],
-            '嘉義市': ['東區', '西區'],
-            '嘉義縣': ['太保市', '朴子市', '布袋鎮', '大林鎮', '民雄鄉', '溪口鄉', '新港鄉', '六腳鄉', '東石鄉', '義竹鄉', '鹿草鄉', '水上鄉', '中埔鄉', '竹崎鄉', '梅山鄉', '番路鄉', '大埔鄉', '阿里山鄉'],
-            '台南市': ['中西區', '東區', '南區', '北區', '安平區', '安南區', '永康區', '歸仁區', '新化區', '左鎮區', '玉井區', '楠西區', '南化區', '仁德區', '關廟區', '龍崎區', '官田區', '麻豆區', '佳里區', '西港區', '七股區', '將軍區', '學甲區', '北門區', '新營區', '後壁區', '白河區', '東山區', '六甲區', '下營區', '柳營區', '鹽水區', '善化區', '大內區', '山上區', '新市區', '安定區'],
-            '高雄市': ['新興區', '前金區', '苓雅區', '鹽埕區', '鼓山區', '旗津區', '前鎮區', '三民區', '楠梓區', '小港區', '左營區', '仁武區', '大社區', '岡山區', '路竹區', '阿蓮區', '田寮區', '燕巢區', '橋頭區', '梓官區', '彌陀區', '永安區', '湖內區', '鳳山區', '大寮區', '林園區', '鳥松區', '大樹區', '旗山區', '美濃區', '六龜區', '內門區', '杉林區', '甲仙區', '桃源區', '那瑪夏區', '茂林區', '茄萣區'],
-            '屏東縣': ['屏東市', '潮州鎮', '東港鎮', '恆春鎮', '萬丹鄉', '長治鄉', '麟洛鄉', '九如鄉', '里港鄉', '鹽埔鄉', '高樹鄉', '萬巒鄉', '內埔鄉', '竹田鄉', '新埤鄉', '枋寮鄉', '新園鄉', '崁頂鄉', '林邊鄉', '南州鄉', '佳冬鄉', '琉球鄉', '車城鄉', '滿州鄉', '霧台鄉', '瑪家鄉', '泰武鄉', '來義鄉', '春日鄉', '獅子鄉', '牡丹鄉', '三地門鄉'],
-            '宜蘭縣': ['宜蘭市', '羅東鎮', '蘇澳鎮', '頭城鎮', '礁溪鄉', '壯圍鄉', '員山鄉', '冬山鄉', '五結鄉', '三星鄉', '大同鄉', '南澳鄉'],
-            '花蓮縣': ['花蓮市', '鳳林鎮', '玉里鎮', '新城鄉', '吉安鄉', '壽豐鄉', '光復鄉', '豐濱鄉', '瑞穗鄉', '富里鄉', '秀林鄉', '萬榮鄉', '卓溪鄉'],
-            '台東縣': ['臺東市', '成功鎮', '關山鎮', '卑南鄉', '大武鄉', '太麻里鄉', '東河鄉', '長濱鄉', '鹿野鄉', '海端鄉', '延平鄉', '金峰鄉', '達仁鄉', '蘭嶼鄉', '綠島鄉'],
-            '澎湖縣': ['馬公市', '湖西鄉', '白沙鄉', '西嶼鄉', '望安鄉', '七美鄉'],
-            '金門縣': ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'],
-            '連江縣': ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉'],
-            '基隆市': ['仁愛區', '信義區', '中正區', '中山區', '安樂區', '暖暖區', '七堵區'],
-            '新竹市': ['東區', '北區', '香山區'],
-            '嘉義市': ['東區', '西區']
-        };
-
-        const addonCount = 3;
-
         document.addEventListener('DOMContentLoaded', () => {
-            initSelect(document.getElementById('mainBrushSelect'), products.mainBrushes);
-            initCitySelect();
-            renderAddons();
-            updatePage();
-        });
+            const taiwanDistricts = {
+                "台北市": ["中正區", "大同區", "中山區", "松山區", "大安區", "萬華區", "信義區", "士林區", "北投區", "內湖區", "南港區", "文山區"],
+                "新北市": ["板橋區", "新莊區", "中和區", "永和區", "土城區", "蘆洲區", "樹林區", "汐止區", "三重區", "淡水區", "新店區", "鶯歌區", "三峽區", "泰山區", "林口區", "五股區", "八里區", "深坑區", "石碇區", "坪林區", "三芝區", "石門區", "金山區", "萬里區", "瑞芳區", "貢寮區", "雙溪區", "平溪區", "烏來區"],
+                "桃園市": ["中壢區", "桃園區", "八德區", "楊梅區", "平鎮區", "大溪區", "龍潭區", "蘆竹區", "龜山區", "大園區", "觀音區", "新屋區", "復興區"],
+                "台中市": ["西屯區", "北屯區", "南屯區", "北區", "西區", "東區", "中區", "南區", "大里區", "太平區", "豐原區", "潭子區", "大雅區", "沙鹿區", "清水區", "龍井區", "梧棲區", "后里區", "神岡區", "霧峰區", "烏日區", "大甲區", "外埔區", "大安區", "東勢區", "石岡區", "新社區", "和平區"],
+                "台南市": ["安南區", "永康區", "東區", "北區", "中西區", "南區", "安平區", "新營區", "仁德區", "歸仁區", "佳里區", "善化區", "麻豆區", "新化區", "新市區", "關廟區", "安定區", "西港區", "七股區", "將軍區", "學甲區", "鹽水區", "官田區", "下營區", "六甲區", "柳營區", "後壁區", "東山區", "白河區", "楠西區", "南化區", "玉井區", "左鎮區", "山上區", "大內區", "龍崎區"],
+                "高雄市": ["鳳山區", "左營區", "前鎮區", "三民區", "楠梓區", "小港區", "鼓山區", "苓雅區", "新興區", "前金區", "鹽埕區", "旗津區", "岡山區", "路竹區", "旗山區", "美濃區", "梓官區", "橋頭區", "燕巢區", "田寮區", "阿蓮區", "湖內區", "茄萣區", "永安區", "彌陀區", "內門區", "杉林區", "甲仙區", "六龜區", "茂林區", "桃源區", "那瑪夏區", "大寮區", "林園區", "仁武區", "大樹區", "鳥松區"],
+                "基隆市": ["仁愛區", "信義區", "中正區", "中山區", "安樂區", "暖暖區", "七堵區"],
+                "新竹市": ["東區", "北區", "香山區"],
+                "嘉義市": ["東區", "西區"],
+                "新竹縣": ["竹北市", "竹東鎮", "新埔鎮", "關西鎮", "湖口鄉", "新豐鄉", "芎林鄉", "橫山鄉", "北埔鄉", "寶山鄉", "峨眉鄉", "尖石鄉", "五峰鄉"],
+                "苗栗縣": ["苗栗市", "竹南鎮", "頭份市", "後龍鎮", "通霄鎮", "苑裡鎮", "卓蘭鎮", "造橋鄉", "公館鄉", "大湖鄉", "銅鑼鄉", "南庄鄉", "頭屋鄉", "三義鄉", "西湖鄉", "獅潭鄉", "三灣鄉", "泰安鄉"],
+                "彰化縣": ["彰化市", "員林市", "和美鎮", "鹿港鎮", "溪湖鎮", "田中鎮", "北斗鎮", "花壇鄉", "芬園鄉", "大村鄉", "埔心鄉", "埔鹽鄉", "永靖鄉", "社頭鄉", "二水鄉", "田尾鄉", "埤頭鄉", "芳苑鄉", "大城鄉", "竹塘鄉", "二林鎮", "伸港鄉", "線西鄉", "福興鄉", "秀水鄉"],
+                "南投縣": ["南投市", "埔里鎮", "草屯鎮", "竹山鎮", "集集鎮", "名間鄉", "鹿谷鄉", "中寮鄉", "魚池鄉", "國姓鄉", "水里鄉", "信義鄉", "仁愛鄉"],
+                "雲林縣": ["斗六市", "斗南鎮", "虎尾鎮", "西螺鎮", "土庫鎮", "北港鎮", "莿桐鄉", "林內鄉", "古坑鄉", "大埤鄉", "崙背鄉", "二崙鄉", "麥寮鄉", "東勢鄉", "褒忠鄉", "臺西鄉", "元長鄉", "口湖鄉", "水林鄉", "四湖鄉"],
+                "嘉義縣": ["太保市", "朴子市", "布袋鎮", "大林鎮", "民雄鄉", "溪口鄉", "新港鄉", "六腳鄉", "東石鄉", "義竹鄉", "鹿草鄉", "中埔鄉", "竹崎鄉", "梅山鄉", "番路鄉", "大埔鄉", "阿里山鄉"],
+                "屏東縣": ["屏東市", "潮州鎮", "東港鎮", "恆春鎮", "萬丹鄉", "長治鄉", "麟洛鄉", "九如鄉", "里港鄉", "鹽埔鄉", "高樹鄉", "萬巒鄉", "內埔鄉", "竹田鄉", "新埤鄉", "枋寮鄉", "新園鄉", "崁頂鄉", "林邊鄉", "南州鄉", "佳冬鄉", "枋山鄉", "車城鄉", "滿州鄉", "霧台鄉", "瑪家鄉", "泰武鄉", "來義鄉", "春日鄉", "獅子鄉", "牡丹鄉", "三地門鄉"],
+                "宜蘭縣": ["宜蘭市", "羅東鎮", "蘇澳鎮", "頭城鎮", "礁溪鄉", "壯圍鄉", "員山鄉", "冬山鄉", "五結鄉", "三星鄉", "大同鄉", "南澳鄉"],
+                "花蓮縣": ["花蓮市", "鳳林鎮", "玉里鎮", "新城鄉", "吉安鄉", "壽豐鄉", "光復鄉", "豐濱鄉", "瑞穗鄉", "秀林鄉", "萬榮鄉", "卓溪鄉"],
+                "台東縣": ["臺東市", "成功鎮", "關山鎮", "卑南鄉", "大武鄉", "太麻里鄉", "東河鄉", "長濱鄉", "鹿野鄉", "池上鄉", "綠島鄉", "蘭嶼鄉", "海端鄉", "延平鄉", "金峰鄉", "達仁鄉"],
+                "澎湖縣": ["馬公市", "湖西鄉", "白沙鄉", "西嶼鄉", "望安鄉", "七美鄉"],
+                "金門縣": ["金城鎮", "金湖鎮", "金沙鎮", "金寧鄉", "烈嶼鄉", "烏坵鄉"],
+                "連江縣": ["南竿鄉", "北竿鄉", "莒光鄉", "東引鄉"],
+            };
 
-        function initSelect(selectElement, optionsArray) {
-            optionsArray.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.name;
-                option.textContent = item.name;
-                selectElement.appendChild(option);
+            const mainToothbrushes = [
+                { name: '至尊雙層刷毛牙刷', image: 'https://i.meee.com.tw/rqJQK61.png', price: 94, quantity: 0 },
+                { name: '迷你至尊雙層刷毛牙刷', image: 'https://i.meee.com.tw/w3hlkno.png', price: 94, quantity: 0 },
+                { name: '深層潔淨牙刷', image: 'https://i.meee.com.tw/Vw7j5ux.png', price: 80, quantity: 0 },
+                { name: '精選全效牙刷(纖細刷頭/超軟毛)', image: 'https://i.meee.com.tw/fLEMin1.png', price: 67, quantity: 0 },
+                { name: '防敏感型牙刷', image: 'https://i.meee.com.tw/p2wv6mB.png', price: 84, quantity: 0 },
+                { name: '迷你幼兒牙刷(0-3歲適用)', image: 'https://i.meee.com.tw/0foVbiT.png', price: 87, quantity: 0 },
+                { name: '兒童牙刷(3歲以上適用)', image: 'https://i.meee.com.tw/Ci7PKAz.png', price: 87, quantity: 0 },
+                { name: '單頭刷', image: 'https://i.meee.com.tw/d3ssRLm.png', price: 94, quantity: 0 },
+                { name: '加護型牙刷(紅色大刷頭)', image: 'https://i.meee.com.tw/OL5T2dF.png', price: 117, quantity: 0 },
+            ];
+
+            const freeGifts = [
+                { name: '輕鬆剔XS/S(2入裝)', image: 'https://i.meee.com.tw/avxcDOM.jpg', quantity: 0 },
+                { name: '輕鬆剔M/L(2入裝)', image: 'https://i.meee.com.tw/WGMzm4x.jpg', quantity: 0 },
+                { name: '牙刷保護蓋(顏色隨機)', image: 'https://i.meee.com.tw/ExGL4PC.png', quantity: 0 },
+                { name: 'L型牙間刷0.4mm(單支裝)', image: 'https://i.meee.com.tw/7uQPW6E.png', quantity: 0 },
+                { name: 'L型牙間刷0.45mm(單支裝)', image: 'https://i.meee.com.tw/8BrJ0F0.png', quantity: 0 },
+                { name: 'L型牙間刷0.5mm(單支裝)', image: 'https://i.meee.com.tw/D5Z7r5A.png', quantity: 0 },
+                { name: 'L型牙間刷0.6mm(單支裝)', image: 'https://i.meee.com.tw/mF9s0gm.png', quantity: 0 },
+                { name: 'L型牙間刷0.7mm(單支裝)', image: 'https://i.meee.com.tw/2SfRVby.png', quantity: 0 },
+                { name: 'L型牙間刷0.8mm(單支裝)', image: 'https://i.meee.com.tw/sgIHFyz.png', quantity: 0 },
+                { name: 'I型牙間刷(僅限0號0.4mm粉紅色)(單支裝)', image: 'https://i.meee.com.tw/iFvapl0.png', quantity: 0 },
+                { name: '小膨脹牙線', image: 'https://i.meee.com.tw/IMiWQwF.jpg', quantity: 0 },
+            ];
+
+            const addonItems = [
+                { name: '迷你牙刷旅行組', image: 'https://placehold.co/100x100/A5C9FF/000000?text=加購品', price: 150, quantity: 0 },
+                { name: '漱口水隨身瓶', image: 'https://placehold.co/100x100/FFB8D2/000000?text=加購品', price: 80, quantity: 0 },
+                { name: '牙線棒補充包', image: 'https://placehold.co/100x100/FFD8A5/000000?text=加購品', price: 60, quantity: 0 },
+            ];
+
+            const totalMainQuantityEl = document.getElementById('gift-limit');
+            const totalGiftsSelectedEl = document.getElementById('gifts-selected');
+            const mainTotalEl = document.getElementById('main-total');
+            const addonTotalEl = document.getElementById('addon-total');
+            const grandTotalEl = document.getElementById('grand-total');
+
+            const messageBox = document.getElementById('message-box');
+            const messageText = document.getElementById('message-text');
+            const closeMessageBtn = document.getElementById('close-message');
+            const resetButton = document.getElementById('reset-btn');
+            const submitButton = document.getElementById('submit-btn');
+
+            // 滾動容器
+            window.scrollContainer = function(containerId, scrollAmount) {
+                const container = document.getElementById(containerId);
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            };
+
+            // 顯示彈窗訊息
+            function showMessage(text) {
+                messageText.textContent = text;
+                messageBox.classList.remove('hidden');
+            }
+
+            // 關閉彈窗訊息
+            closeMessageBtn.addEventListener('click', () => {
+                messageBox.classList.add('hidden');
             });
-        }
-        
-        function initCitySelect() {
-            const citySelect = document.getElementById('citySelect');
-            for (const city in taiwanCities) {
-                const option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                citySelect.appendChild(option);
-            }
-        }
 
-        function updateDistrictSelect() {
-            const citySelect = document.getElementById('citySelect');
-            const districtSelect = document.getElementById('districtSelect');
-            const selectedCity = citySelect.value;
-            
-            districtSelect.innerHTML = '<option value="" disabled selected>-- 請選擇區 --</option>';
-            if (selectedCity && taiwanCities[selectedCity]) {
-                taiwanCities[selectedCity].forEach(district => {
-                    const option = document.createElement('option');
-                    option.value = district;
-                    option.textContent = district;
-                    districtSelect.appendChild(option);
+            // 更新總金額
+            function updateTotals() {
+                let mainTotalPrice = 0;
+                mainToothbrushes.forEach(item => {
+                    mainTotalPrice += item.price * item.quantity;
                 });
-            }
-        }
 
-        function renderGifts(quantity) {
-            const giftContainer = document.getElementById('giftContainer');
-            giftContainer.innerHTML = '';
-            
-            let availableGifts = [];
-            if (quantity >= 300) {
-                availableGifts = giftTiers[300];
-            } else if (quantity >= 200) {
-                availableGifts = giftTiers[200];
-            } else if (quantity >= 100) {
-                availableGifts = giftTiers[100];
-            } else {
-                giftContainer.innerHTML = '<p class="text-center text-[#005ea4]">訂購滿100組旅行組即可選擇免費贈品。</p>';
-                return;
-            }
-
-            const uniqueGifts = [...new Set(availableGifts)];
-            
-            uniqueGifts.forEach(giftName => {
-                const gift = products.gifts.find(g => g.name === giftName);
-                if (!gift) return;
-
-                const row = document.createElement('div');
-                row.className = 'flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-4 bg-white rounded-xl border border-gray-200';
-                
-                const selectDiv = document.createElement('div');
-                selectDiv.className = 'flex-grow w-full';
-                const selectLabel = document.createElement('span');
-                selectLabel.className = 'text-lg font-medium mr-4 text-[#005ea4]';
-                selectLabel.textContent = '贈品名稱：';
-                
-                const selectElement = document.createElement('select');
-                selectElement.className = 'w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 select-input';
-                const option = document.createElement('option');
-                option.value = gift.name;
-                option.textContent = gift.name;
-                selectElement.appendChild(option);
-                selectElement.value = gift.name;
-                selectElement.disabled = true;
-                
-                selectDiv.appendChild(selectLabel);
-                selectDiv.appendChild(selectElement);
-                
-                const quantityDiv = document.createElement('div');
-                quantityDiv.className = 'flex items-center space-x-2';
-                const quantityLabel = document.createElement('label');
-                quantityLabel.className = 'font-medium whitespace-nowrap text-[#005ea4]';
-                quantityLabel.textContent = '數量：';
-                const quantityInput = document.createElement('input');
-                quantityInput.type = 'number';
-                quantityInput.min = 0;
-                quantityInput.value = 0;
-                quantityInput.className = 'w-20 p-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 gift-quantity-input text-input';
-                quantityInput.oninput = updatePage;
-                
-                quantityDiv.appendChild(quantityLabel);
-                quantityDiv.appendChild(quantityInput);
-
-                const imageDiv = document.createElement('div');
-                imageDiv.className = 'w-20 h-20 rounded-xl overflow-hidden shadow-md border-2 border-transparent transition-all duration-300';
-                imageDiv.innerHTML = `<img src="${gift.image}" alt="${gift.name}" class="w-full h-full object-cover">`;
-
-                row.appendChild(imageDiv);
-                row.appendChild(selectDiv);
-                row.appendChild(quantityDiv);
-                giftContainer.appendChild(row);
-            });
-        }
-        
-        function renderAddons() {
-            const addonContainer = document.getElementById('addonContainer');
-            addonContainer.innerHTML = '';
-            
-            for (let i = 0; i < addonCount; i++) {
-                const row = document.createElement('div');
-                row.className = 'flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-4 addon-box rounded-xl border border-gray-200';
-                
-                const selectDiv = document.createElement('div');
-                selectDiv.className = 'flex-grow w-full';
-                const selectLabel = document.createElement('span');
-                selectLabel.className = 'text-lg font-medium mr-4 text-[#005ea4]';
-                selectLabel.textContent = '加購品項：';
-                
-                const selectElement = document.createElement('select');
-                selectElement.className = 'w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 select-input addon-select';
-                selectElement.onchange = updatePage;
-                
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = '-- 請從下拉式選單選擇 --';
-                selectElement.appendChild(defaultOption);
-                
-                products.addons.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.name;
-                    option.textContent = item.name;
-                    selectElement.appendChild(option);
+                let addonTotalPrice = 0;
+                addonItems.forEach(item => {
+                    addonTotalPrice += item.price * item.quantity;
                 });
-                
-                selectDiv.appendChild(selectLabel);
-                selectDiv.appendChild(selectElement);
-                
-                const quantityDiv = document.createElement('div');
-                quantityDiv.className = 'flex items-center space-x-2';
-                const quantityLabel = document.createElement('label');
-                quantityLabel.className = 'font-medium whitespace-nowrap text-[#005ea4]';
-                quantityLabel.textContent = '數量：';
-                const quantityInput = document.createElement('input');
-                quantityInput.type = 'number';
-                quantityInput.min = 0;
-                quantityInput.value = 0;
-                quantityInput.className = 'w-20 p-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 transition-all duration-200 addon-quantity-input text-input';
-                quantityInput.oninput = updatePage;
-                
-                quantityDiv.appendChild(quantityLabel);
-                quantityDiv.appendChild(quantityInput);
 
-                const imageDiv = document.createElement('div');
-                imageDiv.className = 'w-20 h-20 rounded-xl overflow-hidden shadow-md border-2 border-transparent transition-all duration-300';
-                
-                const priceSpan = document.createElement('span');
-                priceSpan.className = 'text-lg font-bold w-20 text-right text-[#005ea4]';
-                priceSpan.textContent = '$0';
-                
-                row.appendChild(imageDiv);
-                row.appendChild(selectDiv);
-                row.appendChild(quantityDiv);
-                row.appendChild(priceSpan);
-                
-                addonContainer.appendChild(row);
-            }
-        }
-
-        function updatePage() {
-            const kitQuantity = parseInt(document.getElementById('kitQuantity').value) || 0;
-            
-            if (kitQuantity < 1) {
-                document.getElementById('kitQuantity').value = 1;
-                return;
+                mainTotalEl.textContent = `$${mainTotalPrice}`;
+                addonTotalEl.textContent = `$${addonTotalPrice}`;
+                grandTotalEl.textContent = `$${mainTotalPrice + addonTotalPrice}`;
             }
 
-            renderGifts(kitQuantity);
-            updateTotals();
-        }
-
-        function updateTotals() {
-            const kitQuantity = parseInt(document.getElementById('kitQuantity').value) || 0;
-
-            const mainBrushSelect = document.getElementById('mainBrushSelect');
-            const selectedMainBrush = products.mainBrushes.find(item => item.name === mainBrushSelect.value);
-            let mainBrushPrice = selectedMainBrush ? selectedMainBrush.price : 0;
-            let mainBrushTotal = mainBrushPrice * kitQuantity;
-            document.getElementById('mainBrushTotal').textContent = `$${mainBrushTotal}`;
-            
-            const mainBrushImage = document.getElementById('mainBrushImage');
-            if (selectedMainBrush) {
-                 mainBrushImage.innerHTML = `<img src="${selectedMainBrush.image}" alt="${selectedMainBrush.name}" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://placehold.co/200x200/cccccc/333333?text=圖片載入失敗'">`;
-            } else {
-                 mainBrushImage.innerHTML = '';
-            }
-
-            const addonSelects = document.querySelectorAll('.addon-select');
-            const addonQuantities = document.querySelectorAll('.addon-quantity-input');
-            const addonPrices = document.querySelectorAll('#addonContainer > div > span');
-            let addonTotal = 0;
-            
-            for (let i = 0; i < addonCount; i++) {
-                const selectedAddon = products.addons.find(item => item.name === addonSelects[i].value);
-                const addonQuantity = parseInt(addonQuantities[i].value) || 0;
-                let currentAddonTotal = 0;
-
-                if (selectedAddon) {
-                    currentAddonTotal = selectedAddon.price * addonQuantity;
-                    addonTotal += currentAddonTotal;
+            // 渲染商品卡片
+            function renderItems(containerId, items, isGift = false, hasPrice = true) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = `product-card flex-none w-44 rounded-xl overflow-hidden shadow-md transition-transform hover:scale-105 duration-300 bg-[#d3f3f5]`;
                     
-                    const addonImageDiv = addonSelects[i].parentNode.parentNode.querySelector('div:first-child');
-                    addonImageDiv.innerHTML = `<img src="${selectedAddon.image}" alt="${selectedAddon.name}" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://placehold.co/200x200/cccccc/333333?text=圖片載入失敗'">`;
-                } else {
-                    const addonImageDiv = addonSelects[i].parentNode.parentNode.querySelector('div:first-child');
-                    addonImageDiv.innerHTML = '';
-                }
+                    const priceDisplay = hasPrice ? `<p class="text-center font-bold text-lg text-[#005ea4] mt-2">$${item.price}</p>` : '';
+                    
+                    card.innerHTML = `
+                        <div class="p-4 flex flex-col items-center">
+                            <img src="${item.image}" alt="${item.name}" class="w-28 h-28 object-contain rounded-lg mb-2 border border-gray-200" onerror="this.onerror=null;this.src='https://placehold.co/100x100/F0F0F0/000000?text=圖片載入失敗';" />
+                            <h3 class="font-bold text-center text-[#005ea4] text-base min-h-[40px]">${item.name}</h3>
+                            ${priceDisplay}
+                            <div class="mt-4 w-full text-center">
+                                <label for="${containerId}-quantity-${index}" class="text-sm text-gray-500 block mb-1">數量</label>
+                                <input type="number" id="${containerId}-quantity-${index}" value="${item.quantity}" min="0" class="quantity-input w-full p-2 text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800" />
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                    
+                    // 添加事件監聽器
+                    const input = card.querySelector(`#${containerId}-quantity-${index}`);
+                    input.addEventListener('input', (e) => {
+                        const newQuantity = parseInt(e.target.value, 10) || 0;
+                        if (isGift) {
+                            const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
+                            const currentGiftQuantity = freeGifts.reduce((sum, item) => sum + item.quantity, 0) - item.quantity;
+                            if (currentGiftQuantity + newQuantity > totalMainQuantity) {
+                                e.target.value = item.quantity; // 回復舊值
+                                showMessage(`贈品總數不能超過主商品總數 (${totalMainQuantity} 份)。`);
+                                return;
+                            }
+                        }
+                        item.quantity = newQuantity;
+                        updateDisplay();
+                    });
+                });
+            }
+
+            // 更新所有顯示內容
+            function updateDisplay() {
+                const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
+                const totalGiftQuantity = freeGifts.reduce((sum, item) => sum + item.quantity, 0);
                 
-                addonPrices[i].textContent = `$${currentAddonTotal}`;
+                totalMainQuantityEl.textContent = totalMainQuantity;
+                totalGiftsSelectedEl.textContent = totalGiftQuantity;
+                
+                updateTotals();
             }
-            document.getElementById('addonTotal').textContent = `$${addonTotal}`;
+
+            // 處理地址選擇
+            const citySelect = document.getElementById('city');
+            const districtSelect = document.getElementById('district');
+
+            function populateCities() {
+                for (const city in taiwanDistricts) {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                }
+            }
+
+            function populateDistricts() {
+                districtSelect.innerHTML = '<option value="">請選擇區</option>';
+                const selectedCity = citySelect.value;
+                if (selectedCity && taiwanDistricts[selectedCity]) {
+                    taiwanDistricts[selectedCity].forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district;
+                        option.textContent = district;
+                        districtSelect.appendChild(option);
+                    });
+                }
+            }
+
+            citySelect.addEventListener('change', populateDistricts);
+
+            // 重置功能
+            resetButton.addEventListener('click', () => {
+                // 重置所有數量
+                mainToothbrushes.forEach(item => item.quantity = 0);
+                freeGifts.forEach(item => item.quantity = 0);
+                addonItems.forEach(item => item.quantity = 0);
+                
+                // 重置聯繫資訊
+                document.getElementById('name').value = '';
+                document.getElementById('gender').value = '小姐';
+                document.getElementById('clinic-name').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('city').value = '';
+                populateDistricts();
+                document.getElementById('address-detail').value = '';
+                
+                // 重新渲染和更新顯示
+                renderItems('main-toothbrushes-container', mainToothbrushes, false, true);
+                renderItems('free-gifts-container', freeGifts, true, false);
+                renderItems('addon-items-container', addonItems, false, true);
+                updateDisplay();
+                
+                showMessage('所有資訊已重置。');
+            });
             
-            const giftQuantityInputs = document.querySelectorAll('.gift-quantity-input');
-            const totalGiftQuantity = Array.from(giftQuantityInputs).reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
-            const giftWarning = document.getElementById('giftQuantityWarning');
+            // 提交功能
+            submitButton.addEventListener('click', () => {
+                const name = document.getElementById('name').value;
+                const gender = document.getElementById('gender').value;
+                const clinicName = document.getElementById('clinic-name').value;
+                const phone = document.getElementById('phone').value;
+                const city = document.getElementById('city').value;
+                const district = document.getElementById('district').value;
+                const addressDetail = document.getElementById('address-detail').value;
 
-            if (totalGiftQuantity > kitQuantity) {
-                giftWarning.classList.remove('hidden');
-            } else {
-                giftWarning.classList.add('hidden');
-            }
+                // 檢查是否填寫完整
+                if (!name || !clinicName || !phone || !city || !district || !addressDetail) {
+                    showMessage('請完整填寫聯繫資訊後再提交。');
+                    return;
+                }
 
-            const grandTotal = mainBrushTotal + addonTotal;
-            document.getElementById('grandTotal').textContent = `$${grandTotal}`;
-        }
+                // 收集訂單資料
+                let orderDetails = [];
+                orderDetails.push("--- 聯繫資訊 ---");
+                orderDetails.push(`姓名: ${name} (${gender})`);
+                orderDetails.push(`診所名稱: ${clinicName}`);
+                orderDetails.push(`聯絡電話: ${phone}`);
+                orderDetails.push(`診所地址: ${city}${district}${addressDetail}`);
+                orderDetails.push("");
+                orderDetails.push("--- 訂購清單 ---");
+                
+                mainToothbrushes.forEach(item => {
+                    if (item.quantity > 0) {
+                        orderDetails.push(`主要牙刷 - ${item.name}: ${item.quantity} 個`);
+                    }
+                });
+                
+                freeGifts.forEach(item => {
+                    if (item.quantity > 0) {
+                        orderDetails.push(`免費贈品 - ${item.name}: ${item.quantity} 份`);
+                    }
+                });
 
-        function resetPage() {
-            document.getElementById('kitQuantity').value = 1;
-            document.getElementById('mainBrushSelect').value = '';
-            const giftInputs = document.querySelectorAll('.gift-quantity-input');
-            giftInputs.forEach(input => input.value = 0);
-            const addonSelects = document.querySelectorAll('.addon-select');
-            addonSelects.forEach(select => select.value = '');
-            const addonInputs = document.querySelectorAll('.addon-quantity-input');
-            addonInputs.forEach(input => input.value = 0);
-            document.getElementById('fullName').value = '';
-            document.getElementById('genderSelect').value = '小姐';
-            document.getElementById('clinicName').value = '';
-            document.getElementById('phone').value = '';
-            document.getElementById('citySelect').value = '';
-            updateDistrictSelect();
-            document.getElementById('addressDetail').value = '';
-            updatePage();
-        }
+                addonItems.forEach(item => {
+                    if (item.quantity > 0) {
+                        orderDetails.push(`加購品項 - ${item.name}: ${item.quantity} 個`);
+                    }
+                });
 
-        function submitOrder() {
-            const orderData = collectOrderData();
+                const mainTotal = mainToothbrushes.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const addonTotal = addonItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const grandTotal = mainTotal + addonTotal;
+
+                orderDetails.push("");
+                orderDetails.push("--- 訂單總計 ---");
+                orderDetails.push(`旅行組總價: $${mainTotal}`);
+                orderDetails.push(`加購品項總價: $${addonTotal}`);
+                orderDetails.push(`訂單總金額: $${grandTotal}`);
+                
+                const recipients = 'jowong@tescodental.com,ciafung@tescodental.com';
+                const subject = '旅行組訂單';
+                const bodyText = `因功能限制，要請您幫忙手動發送此資料到jowong@tescodental.com和ciafung@tescodental.com的郵箱，在確認訂單時，會再回覆此郵件通知您，感謝您的購買與對TePe的支持！如有任何想備註的內容請寫在此處：\n\n${orderDetails.join('\n')}`;
+                
+                const mailtoLink = `mailto:${recipients}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+                
+                window.location.href = mailtoLink;
+            });
             
-            if (!orderData) {
-                return;
-            }
-
-            const emailBody = `因功能限制，要請您幫忙手動發送此資料到jowong@tescodental.com和ciafung@tescodental.com的郵箱，在確認訂單時，會再回覆此郵件通知您，感謝您的購買與對TePe的支持！\n\n---訂單資訊---\n\n訂單提交人：${orderData.contactInfo.name} ${orderData.contactInfo.gender}
-診所名稱：${orderData.contactInfo.clinicName}
-聯絡電話：${orderData.contactInfo.phone}
-診所地址：${orderData.contactInfo.address}
-
-旅行組訂購數量：${orderData.mainBrush.quantity}
-主要牙刷：${orderData.mainBrush.name}
-旅行組總價：$${orderData.mainBrush.total}
-
-免費贈品：
-${orderData.gifts.map(g => `${g.name}: ${g.quantity} 組`).join('\\n')}
-
-加購品項：
-${orderData.addons.map(a => `${a.name}: ${a.quantity} 個, 總價 $${a.total}`).join('\\n')}
-
-訂單總金額：$${orderData.grandTotal}
-
-`;
-            window.location.href = `mailto:jowong@tescodental.com,ciafung@tescodental.com?subject=TePe旅行組訂單&body=${encodeURIComponent(emailBody)}`;
-        }
-
-        function collectOrderData() {
-            const kitQuantity = parseInt(document.getElementById('kitQuantity').value) || 0;
-            const totalGiftQuantity = Array.from(document.querySelectorAll('.gift-quantity-input')).reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
-
-            if (kitQuantity < 1) {
-                alert('請輸入旅行組數量。');
-                return null;
-            }
-            if (totalGiftQuantity > kitQuantity) {
-                alert('您選擇的贈品總數量超過了訂購數量，請修改。');
-                return null;
-            }
-            if (!document.getElementById('mainBrushSelect').value) {
-                alert('請選擇主要牙刷。');
-                return null;
-            }
+            // 首次渲染
+            renderItems('main-toothbrushes-container', mainToothbrushes, false, true);
+            renderItems('free-gifts-container', freeGifts, true, false);
+            renderItems('addon-items-container', addonItems, false, true);
             
-            const gifts = Array.from(document.querySelectorAll('#giftContainer > div')).map(row => {
-                const name = row.querySelector('select').value;
-                const quantity = parseInt(row.querySelector('input').value) || 0;
-                return { name, quantity };
-            }).filter(item => item.quantity > 0);
+            // 初始化地址選項
+            populateCities();
+            populateDistricts();
 
-            const addons = Array.from(document.querySelectorAll('#addonContainer > div')).map(row => {
-                const name = row.querySelector('select').value;
-                const quantity = parseInt(row.querySelector('input').value) || 0;
-                const price = products.addons.find(item => item.name === name)?.price || 0;
-                return { name, quantity, total: price * quantity };
-            }).filter(item => item.name && item.quantity > 0);
-
-            const contactInfo = {
-                name: document.getElementById('fullName').value,
-                gender: document.getElementById('genderSelect').value,
-                clinicName: document.getElementById('clinicName').value,
-                phone: document.getElementById('phone').value,
-                address: `${document.getElementById('citySelect').value}${document.getElementById('districtSelect').value}${document.getElementById('addressDetail').value}`
-            };
-
-            const mainBrush = products.mainBrushes.find(item => item.name === document.getElementById('mainBrushSelect').value);
-            const mainBrushTotal = (mainBrush?.price || 0) * kitQuantity;
-            const addonTotal = addons.reduce((sum, item) => sum + item.total, 0);
-            const grandTotal = mainBrushTotal + addonTotal;
-
-            return {
-                mainBrush: {
-                    name: mainBrush?.name,
-                    price: mainBrush?.price,
-                    quantity: kitQuantity,
-                    total: mainBrushTotal
-                },
-                gifts,
-                addons,
-                contactInfo,
-                grandTotal
-            };
-        }
+            updateDisplay();
+        });
     </script>
 </body>
 </html>
