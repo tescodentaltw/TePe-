@@ -55,6 +55,48 @@
         .arrow-button:hover {
             background-color: rgba(0, 94, 164, 0.8); /* Less transparent on hover */
         }
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -219,6 +261,14 @@
             </button>
         </div>
     </div>
+    
+    <!-- 圖片預覽彈窗 -->
+    <div id="image-modal" class="modal hidden">
+        <span class="close-button" onclick="closeImageModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modal-image" class="modal-image">
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -274,9 +324,11 @@
             ];
 
             const addonItems = [
-                { name: '迷你牙刷旅行組', image: 'https://placehold.co/100x100/A5C9FF/000000?text=加購品', price: 150, quantity: 0 },
-                { name: '漱口水隨身瓶', image: 'https://placehold.co/100x100/FFB8D2/000000?text=加購品', price: 80, quantity: 0 },
-                { name: '牙線棒補充包', image: 'https://placehold.co/100x100/FFD8A5/000000?text=加購品', price: 60, quantity: 0 },
+                { name: 'Tesco 牙齒娃娃', image: 'https://i.meee.com.tw/k9MjJaF.png', price: 20, quantity: 0 },
+                { name: 'TePe 2分鐘沙漏 (輔助計時刷牙時間)', image: 'https://i.meee.com.tw/a64LB7e.png', price: 30, quantity: 0 },
+                { name: 'TePe 陶瓷牙刷座(白色)', image: 'https://i.meee.com.tw/kQX4f2y.png', price: 40, quantity: 0 },
+                { name: 'TePe 牙間刷旅用攜帶盒', image: 'https://i.meee.com.tw/pIySKjJ.png', price: 45, quantity: 0 },
+                { name: 'TePe 牙間刷居家收納盒', image: 'https://i.meee.com.tw/sGoKFdn.png', price: 50, quantity: 0 },
             ];
 
             const totalMainQuantityEl = document.getElementById('gift-limit');
@@ -284,17 +336,31 @@
             const mainTotalEl = document.getElementById('main-total');
             const addonTotalEl = document.getElementById('addon-total');
             const grandTotalEl = document.getElementById('grand-total');
+            
+            const imageModal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
 
             const messageBox = document.getElementById('message-box');
             const messageText = document.getElementById('message-text');
             const closeMessageBtn = document.getElementById('close-message');
             const resetButton = document.getElementById('reset-btn');
             const submitButton = document.getElementById('submit-btn');
-            
+
             // 滾動容器
             window.scrollContainer = function(containerId, scrollAmount) {
                 const container = document.getElementById(containerId);
                 container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            };
+
+            // 顯示圖片預覽彈窗
+            window.openImageModal = function(src) {
+                modalImage.src = src;
+                imageModal.classList.remove('hidden');
+            };
+
+            // 關閉圖片預覽彈窗
+            window.closeImageModal = function() {
+                imageModal.classList.add('hidden');
             };
 
             // 顯示彈窗訊息
@@ -337,7 +403,7 @@
                     
                     card.innerHTML = `
                         <div class="p-4 flex flex-col items-center">
-                            <img src="${item.image}" alt="${item.name}" class="w-28 h-28 object-contain rounded-lg mb-2 border border-gray-200" onerror="this.onerror=null;this.src='https://placehold.co/100x100/F0F0F0/000000?text=圖片載入失敗';" />
+                            <img src="${item.image}" alt="${item.name}" class="w-28 h-28 object-contain rounded-lg mb-2 border border-gray-200 cursor-pointer" onclick="openImageModal('${item.image}')" onerror="this.onerror=null;this.src='https://placehold.co/100x100/F0F0F0/000000?text=圖片載入失敗';" />
                             <h3 class="font-bold text-center text-[#005ea4] text-base min-h-[40px]">${item.name}</h3>
                             ${priceDisplay}
                             <div class="mt-4 w-full text-center">
