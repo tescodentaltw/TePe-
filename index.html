@@ -255,7 +255,7 @@
                 { name: '加護型牙刷(紅色大刷頭)', image: 'https://i.meee.com.tw/OL5T2dF.png', price: 117, quantity: 0 },
             ];
 
-            const freeGifts = [
+            const allFreeGifts = [
                 { name: '輕鬆剔XS/S(2入裝)', image: 'https://i.meee.com.tw/avxcDOM.jpg', quantity: 0 },
                 { name: '輕鬆剔M/L(2入裝)', image: 'https://i.meee.com.tw/WGMzm4x.jpg', quantity: 0 },
                 { name: '牙刷保護蓋(顏色隨機)', image: 'https://i.meee.com.tw/ExGL4PC.png', quantity: 0 },
@@ -286,7 +286,7 @@
             const closeMessageBtn = document.getElementById('close-message');
             const resetButton = document.getElementById('reset-btn');
             const submitButton = document.getElementById('submit-btn');
-
+            
             // 滾動容器
             window.scrollContainer = function(containerId, scrollAmount) {
                 const container = document.getElementById(containerId);
@@ -350,7 +350,7 @@
                         const newQuantity = parseInt(e.target.value, 10) || 0;
                         if (isGift) {
                             const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
-                            const currentGiftQuantity = freeGifts.reduce((sum, item) => sum + item.quantity, 0) - item.quantity;
+                            const currentGiftQuantity = allFreeGifts.reduce((sum, item) => sum + item.quantity, 0) - item.quantity;
                             if (currentGiftQuantity + newQuantity > totalMainQuantity) {
                                 e.target.value = item.quantity; // 回復舊值
                                 showMessage(`贈品總數不能超過主商品總數 (${totalMainQuantity} 份)。`);
@@ -366,10 +366,29 @@
             // 更新所有顯示內容
             function updateDisplay() {
                 const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
-                const totalGiftQuantity = freeGifts.reduce((sum, item) => sum + item.quantity, 0);
+                const totalGiftQuantity = allFreeGifts.reduce((sum, item) => sum + item.quantity, 0);
                 
                 totalMainQuantityEl.textContent = totalMainQuantity;
                 totalGiftsSelectedEl.textContent = totalGiftQuantity;
+
+                // 根據主商品數量過濾贈品列表
+                let giftsToShow = [];
+                if (totalMainQuantity >= 300) {
+                    giftsToShow = allFreeGifts;
+                } else if (totalMainQuantity >= 200) {
+                    giftsToShow = allFreeGifts.slice(0, 10);
+                } else if (totalMainQuantity >= 100) {
+                    giftsToShow = allFreeGifts.slice(0, 3);
+                }
+                
+                // 隱藏未達門檻的贈品數量
+                allFreeGifts.forEach(gift => {
+                    if (!giftsToShow.includes(gift)) {
+                        gift.quantity = 0;
+                    }
+                });
+
+                renderItems('free-gifts-container', giftsToShow, true, false);
                 
                 updateTotals();
             }
@@ -406,7 +425,7 @@
             resetButton.addEventListener('click', () => {
                 // 重置所有數量
                 mainToothbrushes.forEach(item => item.quantity = 0);
-                freeGifts.forEach(item => item.quantity = 0);
+                allFreeGifts.forEach(item => item.quantity = 0);
                 addonItems.forEach(item => item.quantity = 0);
                 
                 // 重置聯繫資訊
@@ -420,7 +439,6 @@
                 
                 // 重新渲染和更新顯示
                 renderItems('main-toothbrushes-container', mainToothbrushes, false, true);
-                renderItems('free-gifts-container', freeGifts, true, false);
                 renderItems('addon-items-container', addonItems, false, true);
                 updateDisplay();
                 
@@ -459,7 +477,7 @@
                     }
                 });
                 
-                freeGifts.forEach(item => {
+                allFreeGifts.forEach(item => {
                     if (item.quantity > 0) {
                         orderDetails.push(`免費贈品 - ${item.name}: ${item.quantity} 份`);
                     }
@@ -492,7 +510,6 @@
             
             // 首次渲染
             renderItems('main-toothbrushes-container', mainToothbrushes, false, true);
-            renderItems('free-gifts-container', freeGifts, true, false);
             renderItems('addon-items-container', addonItems, false, true);
             
             // 初始化地址選項
