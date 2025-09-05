@@ -41,19 +41,19 @@
             margin: 0;
         }
         .arrow-button {
-            background-color: #005ea4;
+            background-color: rgba(0, 94, 164, 0.5); /* Semi-transparent blue */
             color: white;
             border-radius: 9999px;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s;
         }
         .arrow-button:hover {
-            background-color: #004e93;
+            background-color: rgba(0, 94, 164, 0.8); /* Less transparent on hover */
         }
     </style>
 </head>
@@ -155,6 +155,10 @@
                 <div>
                     <label for="phone" class="block text-sm font-medium mb-1">聯絡電話</label>
                     <input type="tel" id="phone" class="w-full p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800">
+                </div>
+                <div>
+                    <label for="sales-rep-name" class="block text-sm font-medium mb-1">業務名稱</label>
+                    <input type="text" id="sales-rep-name" class="w-full p-2 rounded-md border border-[#8aced6] focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800">
                 </div>
                 <div>
                     <label for="city" class="block text-sm font-medium mb-1">診所地址</label>
@@ -433,6 +437,7 @@
                 document.getElementById('gender').value = '小姐';
                 document.getElementById('clinic-name').value = '';
                 document.getElementById('phone').value = '';
+                document.getElementById('sales-rep-name').value = '';
                 document.getElementById('city').value = '';
                 populateDistricts();
                 document.getElementById('address-detail').value = '';
@@ -451,12 +456,13 @@
                 const gender = document.getElementById('gender').value;
                 const clinicName = document.getElementById('clinic-name').value;
                 const phone = document.getElementById('phone').value;
+                const salesRepName = document.getElementById('sales-rep-name').value;
                 const city = document.getElementById('city').value;
                 const district = document.getElementById('district').value;
                 const addressDetail = document.getElementById('address-detail').value;
 
                 // 檢查是否填寫完整
-                if (!name || !clinicName || !phone || !city || !district || !addressDetail) {
+                if (!name || !clinicName || !phone || !salesRepName || !city || !district || !addressDetail) {
                     showMessage('請完整填寫聯繫資訊後再提交。');
                     return;
                 }
@@ -465,6 +471,7 @@
                 let orderDetails = [];
                 orderDetails.push("--- 聯繫資訊 ---");
                 orderDetails.push(`姓名: ${name} (${gender})`);
+                orderDetails.push(`業務名稱: ${salesRepName}`);
                 orderDetails.push(`診所名稱: ${clinicName}`);
                 orderDetails.push(`聯絡電話: ${phone}`);
                 orderDetails.push(`診所地址: ${city}${district}${addressDetail}`);
