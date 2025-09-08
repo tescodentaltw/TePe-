@@ -714,25 +714,33 @@
                 showMessage('所有資訊已重置。');
             });
             
-            // 提交功能
-            submitButton.addEventListener('click', () => {
-                const name = document.getElementById('name').value;
-                const clinicName = document.getElementById('clinic-name').value;
-                const phone = document.getElementById('phone').value;
-                const salesRepName = document.getElementById('sales-rep-name').value;
-                const city = document.getElementById('city').value;
-                const district = document.getElementById('district').value;
-                const addressDetail = document.getElementById('address-detail').value;
+// 提交功能
+submitButton.addEventListener('click', () => {
+    // ---- 新增的檢查邏輯 START ----
+    const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
+    if (totalMainQuantity < 100) {
+        showMessage('牙刷最低訂購量為100，請輸入牙刷數量大於100才能提交成功，謝謝！');
+        return; // 如果數量不足，則顯示訊息並停止後續操作
+    }
+    // ---- 新增的檢查邏輯 END ----
 
-                if (!name || !clinicName || !phone || !salesRepName || !city || !district || !addressDetail) {
-                    showMessage('請完整填寫聯繫資訊後再提交。');
-                    return;
-                }
+    const name = document.getElementById('name').value;
+    const clinicName = document.getElementById('clinic-name').value;
+    const phone = document.getElementById('phone').value;
+    const salesRepName = document.getElementById('sales-rep-name').value;
+    const city = document.getElementById('city').value;
+    const district = document.getElementById('district').value;
+    const addressDetail = document.getElementById('address-detail').value;
 
-                const orderDetails = generateOrderDetails();
-                orderDetailsDisplay.textContent = orderDetails;
-                orderModal.classList.remove('hidden');
-            });
+    if (!name || !clinicName || !phone || !salesRepName || !city || !district || !addressDetail) {
+        showMessage('請完整填寫聯繫資訊後再提交。');
+        return;
+    }
+
+    const orderDetails = generateOrderDetails();
+    orderDetailsDisplay.textContent = orderDetails;
+    orderModal.classList.remove('hidden');
+});
 
             // 生成訂單內容
             function generateOrderDetails() {
@@ -820,5 +828,6 @@ sendMailBtn.addEventListener('click', () => {
     </script>
 </body>
 </html>
+
 
 
