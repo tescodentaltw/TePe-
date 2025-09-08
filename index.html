@@ -791,23 +791,24 @@
                 });
             });
 
-            // 發送郵件
-            sendMailBtn.addEventListener('click', () => {
-                const subject = `TePe 旅行組訂購 - ${document.getElementById('clinic-name').value}`;
-                const body = generateOrderDetails();
-                
-                // 使用 encodeURIComponent 確保郵件內容的特殊字元正確編碼
-                const mailtoLink = `mailto:jowong@tescodental.com,ciafung@tescodental.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                
-                try {
-                    window.open(mailtoLink, '_blank');
-                    // 成功開啟郵件視窗後，關閉訂單彈窗
-                    orderModal.classList.add('hidden');
-                } catch (error) {
-                    console.error('Failed to open mail client:', error);
-                    showMessage('無法自動開啟郵件程式。請手動複製內容並發送。');
-                }
-            });
+// 發送郵件
+sendMailBtn.addEventListener('click', () => {
+    const subject = `TePe 旅行組訂購 - ${document.getElementById('clinic-name').value}`;
+    const body = generateOrderDetails();
+    const to = 'jowong@tescodental.com,ciafung@tescodental.com';
+
+    // 直接建立 Gmail 的撰寫郵件 URL，此方法更可靠且支援較長內文
+    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    try {
+        // 在新分頁中開啟 Gmail 連結
+        window.open(gmailLink, '_blank');
+        orderModal.classList.add('hidden');
+    } catch (error) {
+        console.error('Failed to open Gmail compose window:', error);
+        showMessage('無法自動開啟 Gmail。請手動複製內容並發送。');
+    }
+});
 
             closeOrderModalBtn.addEventListener('click', () => {
                 orderModal.classList.add('hidden');
@@ -819,3 +820,4 @@
     </script>
 </body>
 </html>
+
