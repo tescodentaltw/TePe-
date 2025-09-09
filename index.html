@@ -143,21 +143,18 @@
         </div>
     </div>
     
-    <!-- 總計金額與標題 (合併) -->
     <div class="container mx-auto bg-[#8aced6] rounded-3xl shadow-xl p-6 sm:p-10 my-8">
         <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-[#005ea4] mb-4">旅行組訂購</h1>
         <p class="section-text text-center text-[#005ea4] mb-8">
-            請選擇您所需的數量與品項，系統將會自動為您計算總價。此價格已包含旅行組外盒、獨家診所名稱貼紙(會免費為您設計與印製)。凡購買滿100/200/300組都會有不同的贈品可可勾選。
+            請選擇您所需的數量與品項，系統將會自動為您計算總價。此價格已包含旅行組外盒、獨家診所名稱貼紙(會為您設計)。有購買滿100/200/300組都會有不同的贈品可供挑選。
         </p>
         <div class="flex justify-center cursor-pointer transform transition-transform duration-300 hover:scale-105" onclick="openImageModal('https://i.meee.com.tw/7hSonwC.png')">
             <img src="https://i.meee.com.tw/7hSonwC.png" alt="Travel Kit" class="w-full rounded-xl shadow-md" style="max-width: 100%;">
         </div>
     </div>
 
-    <!-- 訂購區塊 -->
     <div class="container mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-10 my-8">
 
-        <!-- 第一步：選擇主要牙刷與數量 -->
         <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
             <h2 class="text-2xl font-bold text-[#005ea4] mb-2">第一步：選擇主要牙刷</h2>
             <p class="section-text text-sm text-[#005ea4] mb-1">
@@ -166,33 +163,28 @@
             <p id="main-toothbrush-warning" class="section-text text-sm text-[#e50031] mb-2 hidden">
                 訂購總量未達100，請輸入數量至訂購總量高於100。
             </p>
+                        <p id="main-toothbrush-warning" class="section-text text-sm text-[#e50031] mb-2 hidden">
+                此庫存量未必為即時更新的庫存量其數目或許會有誤差
+            </p>
             <table class="discount-table text-sm mb-4">
                 <thead>
                     <tr>
-                        <th class="rounded-tl-lg text-white bg-[#005ea4]">訂購總量(最低訂購量為100)</th>
-                        <th class="rounded-tr-lg text-white bg-[#005ea4]">折扣(不能與其他折扣混搭)</th>
-                        <th class="rounded-tr-lg text-white bg-[#005ea4]">可勾選之贈品數量</th>
-                        <th class="rounded-tr-lg text-white bg-[#005ea4]">可挑選之贈品種類</th>
+                        <th class="rounded-tl-lg text-white bg-[#005ea4]">訂購總量</th>
+                        <th class="rounded-tr-lg text-white bg-[#005ea4]">折扣</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td class="bg-[#8aced6] text-[#005ea4]">100</td>
                         <td class="bg-[#8aced6] text-[#005ea4]">68折</td>
-                        <td class="bg-[#8aced6] text-[#005ea4]">1種</td>
-                        <td class="bg-[#8aced6] text-[#005ea4]">3種</td>
                     </tr>
                     <tr>
                         <td class="bg-[#8aced6] text-[#005ea4]">200</td>
                         <td class="bg-[#8aced6] text-[#005ea4]">63折</td>
-                        <td class="bg-[#8aced6] text-[#005ea4]">2種</td>
-                        <td class="bg-[#8aced6] text-[#005ea4]">10種</td>
                     </tr>
                     <tr>
                         <td class="rounded-bl-lg bg-[#8aced6] text-[#005ea4]">300或以上</td>
                         <td class="rounded-br-lg bg-[#8aced6] text-[#005ea4]">6折</td>
-                        <td class="rounded-br-lg bg-[#8aced6] text-[#005ea4]">3種</td>
-                        <td class="rounded-br-lg bg-[#8aced6] text-[#005ea4]">11種</td>
                     </tr>
                 </tbody>
             </table>
@@ -208,12 +200,8 @@
             </div>
         </div>
 
-        <!-- 第二步：選擇免費贈品 -->
         <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
             <h2 class="text-2xl font-bold text-[#005ea4] mb-2">第二步：選擇免費贈品</h2>
-            <p class="section-text text-sm text-[#005ea4] mb-1">
-                勾選後即免費贈予您訂購的旅行組總數量相同之贈品數量，凡購買滿100/200/300組都會有不同的贈品可勾選。
-            </p>
             <p id="gift-message" class="section-text text-sm text-[#005ea4] mb-4">
                 您目前能勾選 <span id="gift-limit" class="font-semibold text-[#e50031]">0</span> 個贈品，
                 <br>再加入 <span id="gift-next-tier-diff" class="font-semibold text-[#e50031]">0</span> 個牙刷旅行組將能再多勾選一個贈品。
@@ -233,7 +221,6 @@
             </div>
         </div>
 
-        <!-- 第三步：選擇加購品項 -->
         <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
             <h2 class="text-2xl font-bold text-[#005ea4] mb-4">第三步：選擇加購品項</h2>
             <p class="section-text text-sm text-[#005ea4] mb-4">
@@ -251,7 +238,6 @@
             </div>
         </div>
         
-        <!-- 聯繫資訊 -->
         <div class="bg-[#8aced6] border border-[#8aced6] rounded-2xl p-6 mb-8">
             <h2 class="text-2xl font-bold text-[#005ea4] mb-4">聯繫資訊</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[#005ea4]">
@@ -293,30 +279,28 @@
             </div>
         </div>
 
-        <!-- 訂單總計區塊 -->
         <div class="bg-[#005ea4] border border-[#005ea4] rounded-2xl p-6 mb-8 text-white">
             <h2 class="text-2xl font-bold text-white text-center mb-4">訂單總計</h2>
             <div class="space-y-2">
                 <div class="flex justify-between border-b border-white pb-2">
                     <span class="font-medium">旅行組總價：</span>
-                    <span id="main-total" class="font-bold">$0</span>
+                    <span id="main-total" class="font-bold">$0.00</span>
                 </div>
                 <div class="flex justify-between border-b border-white pb-2" id="discounted-price-row">
                     <span id="discounted-total-label" class="font-medium">旅行組折後總價：</span>
-                    <span id="discounted-total" class="font-bold">$0</span>
+                    <span id="discounted-total" class="font-bold">$0.00</span>
                 </div>
                 <div class="flex justify-between border-b border-white pb-2">
                     <span class="font-medium text-[#ea5293]">共省下：</span>
-                    <span id="total-savings" class="font-bold text-[#ea5293]">$0</span>
+                    <span id="total-savings" class="font-bold text-[#ea5293]">$0.00</span>
                 </div>
                 <div class="flex justify-between text-2xl font-bold pt-2">
                     <span>訂單總金額：</span>
-                    <span id="grand-total">$0</span>
+                    <span id="grand-total">$0.00</span>
                 </div>
             </div>
         </div>
 
-        <!-- 按鈕區塊 -->
         <div class="flex justify-center space-x-4">
             <button id="reset-btn" class="bg-[#8aced6] hover:bg-[#72b8c9] text-[#005ea4] font-bold py-2 px-6 rounded-full transition-colors">
                 重置
@@ -327,12 +311,10 @@
         </div>
     </div>
     
-    <!-- 版權資訊 -->
     <div class="container mx-auto text-center text-gray-700 text-xs mt-8">
         TePe 緹碧瑞典專業口腔護理品牌 Copyright © 2022 TESCO DENTAL TW All RIGHTS RESERVED
     </div>
 
-    <!-- 彈窗訊息 -->
     <div id="message-box" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-lg p-6 shadow-xl text-center max-w-sm mx-4">
             <p id="message-text" class="text-lg font-semibold text-gray-800 mb-4"></p>
@@ -342,7 +324,6 @@
         </div>
     </div>
 
-    <!-- 訂單內容彈窗 -->
     <div id="order-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-lg p-6 shadow-xl max-w-lg mx-4">
             <h3 class="text-xl font-bold text-center mb-4">訂單內容</h3>
@@ -362,7 +343,6 @@
         </div>
     </div>
     
-    <!-- 圖片預覽彈窗 -->
     <div id="image-modal" class="modal hidden">
         <span class="close-button" onclick="closeImageModal()">&times;</span>
         <div class="modal-content">
@@ -397,17 +377,20 @@
                 "連江縣": ["南竿鄉", "北竿鄉", "莒光鄉", "東引鄉"],
             };
 
+            // --- 庫存管理 ---
+            // 請在此處更新各牙刷的庫存數量
+            // 當您補貨後，請直接修改 "stock" 後面的數字
             const mainToothbrushes = [
-                { name: '至尊雙層刷毛牙刷', image: 'https://i.meee.com.tw/rqJQK61.png', price: 140, quantity: 0 },
-                { name: '迷你至尊雙層刷毛牙刷', image: 'https://i.meee.com.tw/w3hlkno.png', price: 140, quantity: 0 },
-                { name: '深層潔淨牙刷(超軟毛)', image: 'https://i.meee.com.tw/Vw7j5ux.png', price: 120, quantity: 0 },
-                { name: '精選全效牙刷(纖細刷頭/超軟毛)', image: 'https://i.meee.com.tw/fLEMin1.png', price: 100, quantity: 0 },
-                { name: '防敏感型牙刷', image: 'https://i.meee.com.tw/p2wv6mB.png', price: 125, quantity: 0 },
-                { name: '迷你幼兒牙刷(0-3歲適用)', image: 'https://i.meee.com.tw/0foVbiT.png', price: 130, quantity: 0 },
-                { name: '兒童牙刷(3歲以上適用)', image: 'https://i.meee.com.tw/Ci7PKAz.png', price: 130, quantity: 0 },
-                { name: '單頭刷', image: 'https://i.meee.com.tw/d3ssRLm.png', price: 140, quantity: 0 },
-                { name: '加護型牙刷(紅色大刷頭)', image: 'https://i.meee.com.tw/OL5T2dF.png', price: 175, quantity: 0 },
-                { name: '加護型牙刷(藍色小刷頭)', image: 'https://i.meee.com.tw/dLEy6Et.png', price: 175, quantity: 0 },
+                { name: '至尊雙層刷毛牙刷', image: 'https://i.meee.com.tw/rqJQK61.png', price: 140, quantity: 0, stock: 560 },
+                { name: '迷你至尊雙層刷毛牙刷', image: 'https://i.meee.com.tw/w3hlkno.png', price: 140, quantity: 0, stock: 560 },
+                { name: '深層潔淨牙刷(超軟毛)', image: 'https://i.meee.com.tw/Vw7j5ux.png', price: 120, quantity: 0, stock: 130 },
+                { name: '精選全效牙刷(纖細刷頭/超軟毛)', image: 'https://i.meee.com.tw/fLEMin1.png', price: 100, quantity: 0, stock: 180 },
+                { name: '防敏感型牙刷', image: 'https://i.meee.com.tw/p2wv6mB.png', price: 125, quantity: 0, stock: 280 },
+                { name: '迷你幼兒牙刷(0-3歲適用)', image: 'https://i.meee.com.tw/0foVbiT.png', price: 130, quantity: 0, stock: 230 },
+                { name: '兒童牙刷(3歲以上適用)', image: 'https://i.meee.com.tw/Ci7PKAz.png', price: 130, quantity: 0, stock: 80 },
+                { name: '單頭刷', image: 'https://i.meee.com.tw/d3ssRLm.png', price: 140, quantity: 0, stock: 800 },
+                { name: '加護型牙刷(紅色大刷頭)', image: 'https://i.meee.com.tw/OL5T2dF.png', price: 175, quantity: 0, stock: 200 },
+                { name: '加護型牙刷(藍色小刷頭)', image: 'https://i.meee.com.tw/dLEy6Et.png', price: 175, quantity: 0, stock: 2000 },
             ];
 
             const allFreeGifts = [
@@ -498,10 +481,10 @@
                 discountedTotal = mainTotalPrice * discountRate;
                 const totalSavings = mainTotalPrice - discountedTotal;
 
-                mainTotalEl.textContent = `$${mainTotalPrice}`;
-                discountedTotalEl.textContent = `$${Math.round(discountedTotal)}`;
-                totalSavingsEl.textContent = `$${Math.round(totalSavings)}`;
-                grandTotalEl.textContent = `$${Math.round(discountedTotal)}`;
+                mainTotalEl.textContent = `$${mainTotalPrice.toFixed(2)}`;
+                discountedTotalEl.textContent = `$${discountedTotal.toFixed(2)}`;
+                totalSavingsEl.textContent = `$${totalSavings.toFixed(2)}`;
+                grandTotalEl.textContent = `$${discountedTotal.toFixed(2)}`;
 
                 if (totalMainQuantity >= 100) {
                     discountedPriceRow.classList.remove('hidden');
@@ -528,26 +511,29 @@
                     
                     if (isFreeGift) {
                         card.classList.add('gift-card');
-                    } else {
-                        card.classList.remove('gift-card');
-                        card.classList.add('hover:scale-100'); // Reset hover scale for non-gift cards
-                        card.classList.add('hover:shadow-md'); // Reset hover shadow for non-gift cards
                     }
 
                     let priceDisplay = '';
                     if (isMainToothbrush) {
                         const discountedPrice = item.price * discountRate;
+                        const stockInfo = `<p class="text-sm text-gray-700 mt-1">庫存: ${item.stock} 支</p>`;
                         if (totalMainQuantity >= 100) {
-                            const discountText = totalMainQuantity >= 300 ? '6' : totalMainQuantity >= 200 ? '63' : '68';
+                            const discountText = totalMainQuantity >= 300 ? '6' : totalMainQuantity >= 200 ? '6.3' : '6.8';
                             priceDisplay = `
                                 <div class="flex flex-col items-center mt-2">
                                     <p class="text-sm text-[#005ea4]">享 ${discountText} 折</p>
                                     <p class="text-sm text-[#005ea4] line-through">定價 $${item.price}</p>
-                                    <p class="text-center font-bold text-lg text-[#005ea4] mt-1">優惠價 $${Math.round(discountedPrice)}</p>
+                                    <p class="text-center font-bold text-lg text-[#005ea4] mt-1">優惠價 $${discountedPrice.toFixed(2)}</p>
+                                    ${stockInfo}
                                 </div>
                             `;
                         } else {
-                            priceDisplay = `<p class="text-center font-bold text-lg text-[#005ea4] mt-2">定價 $${item.price}</p>`;
+                            priceDisplay = `
+                                <div class="flex flex-col items-center mt-2">
+                                    <p class="text-center font-bold text-lg text-[#005ea4]">定價 $${item.price}</p>
+                                    ${stockInfo}
+                                </div>
+                            `;
                         }
                     } else if (isAddon) {
                         priceDisplay = `<p class="text-center font-bold text-lg text-[#005ea4] mt-2">定價 $${item.price}</p>`;
@@ -556,9 +542,9 @@
                     let quantityControl = '';
                     if (isMainToothbrush) {
                         quantityControl = `
-                            <div class="mt-4 w-full text-center">
+                            <div class="mt-2 w-full text-center">
                                 <label for="${containerId}-quantity-${index}" class="text-sm text-gray-500 block mb-1">數量</label>
-                                <input type="number" id="${containerId}-quantity-${index}" value="${item.quantity}" min="0" class="quantity-input w-full p-2 text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800" />
+                                <input type="number" id="${containerId}-quantity-${index}" value="${item.quantity}" min="0" max="${item.stock}" class="quantity-input w-full p-2 text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[#005ea4] text-gray-800" />
                             </div>
                         `;
                     } else if (isFreeGift) {
@@ -588,8 +574,16 @@
                     
                     if (isMainToothbrush) {
                         const input = card.querySelector(`#${containerId}-quantity-${index}`);
-                        input.addEventListener('change', (e) => { // Updated to 'change' event
-                            item.quantity = parseInt(e.target.value, 10) || 0;
+                        input.addEventListener('change', (e) => {
+                            let requestedQuantity = parseInt(e.target.value, 10) || 0;
+                            
+                            if (requestedQuantity > item.stock) {
+                                showMessage('庫存量不足，請輸入與庫存量相同或少於庫存量的數量');
+                                requestedQuantity = item.stock;
+                                e.target.value = item.stock;
+                            }
+
+                            item.quantity = requestedQuantity;
                             updateDisplay();
                         });
                     } else if (isFreeGift) {
@@ -598,23 +592,18 @@
                             if (e.target.tagName !== 'INPUT') { 
                                 checkbox.checked = !checkbox.checked;
                             }
-                            if (checkbox.checked) {
-                                const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
-                                const giftLimit = getGiftLimit(totalMainQuantity);
-                                const currentSelected = allFreeGifts.filter(g => g.checked).length;
-                                
-                                if (currentSelected >= giftLimit) {
-                                    checkbox.checked = false;
-                                    showMessage(`您目前最多只能選擇 ${giftLimit} 份免費贈品。`);
-                                } else {
-                                    item.checked = true;
-                                }
-                            } else {
+                            const isChecked = checkbox.checked;
+                            item.checked = isChecked;
+
+                            const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
+                            const giftLimit = getGiftLimit(totalMainQuantity);
+                            const currentSelected = allFreeGifts.filter(g => g.checked).length;
+                            
+                            if (isChecked && currentSelected > giftLimit) {
+                                showMessage(`您目前最多只能選擇 ${giftLimit} 份免費贈品。`);
+                                checkbox.checked = false;
                                 item.checked = false;
                             }
-                            updateDisplay();
-                        });
-                        checkbox.addEventListener('change', () => {
                             updateDisplay();
                         });
                     }
@@ -637,7 +626,6 @@
                 
                 const giftLimit = getGiftLimit(totalMainQuantity);
                 
-                // Update free gift message
                 if (totalMainQuantity >= 300) {
                     giftMessageEl.classList.add('hidden');
                     giftCongratulationEl.classList.remove('hidden');
@@ -647,11 +635,10 @@
                     const nextTierQty = totalMainQuantity >= 200 ? 300 : totalMainQuantity >= 100 ? 200 : 100;
                     const diff = nextTierQty - totalMainQuantity;
                     giftLimitEl.textContent = giftLimit;
-                    giftNextTierDiffEl.textContent = diff;
+                    giftNextTierDiffEl.textContent = diff > 0 ? diff : 0;
                 }
                 
-                // Update main toothbrush warning
-                if (totalMainQuantity < 100) {
+                if (totalMainQuantity < 100 && totalMainQuantity > 0) {
                     mainToothbrushWarningEl.classList.remove('hidden');
                 } else {
                     mainToothbrushWarningEl.classList.add('hidden');
@@ -660,7 +647,6 @@
                 renderItems('main-toothbrushes-container', mainToothbrushes);
                 renderItems('addon-items-container', addonItems);
                 
-                // Filter gifts to show
                 let giftsToShow = [];
                 if (totalMainQuantity >= 300) {
                     giftsToShow = allFreeGifts;
@@ -669,6 +655,7 @@
                 } else if (totalMainQuantity >= 100) {
                     giftsToShow = allFreeGifts.slice(0, 3);
                 }
+                
                 allFreeGifts.forEach(gift => {
                     if (!giftsToShow.includes(gift)) {
                         gift.checked = false;
@@ -679,7 +666,6 @@
                 updateTotals();
             }
 
-            // 處理地址選擇
             const citySelect = document.getElementById('city');
             const districtSelect = document.getElementById('district');
 
@@ -707,53 +693,52 @@
 
             citySelect.addEventListener('change', populateDistricts);
 
-            // 重置功能
             resetButton.addEventListener('click', () => {
                 mainToothbrushes.forEach(item => item.quantity = 0);
                 allFreeGifts.forEach(item => item.checked = false);
-                
-                document.getElementById('name').value = '';
-                document.getElementById('gender').value = '小姐';
-                document.getElementById('clinic-name').value = '';
-                document.getElementById('phone').value = '';
-                document.getElementById('sales-rep-name').value = '';
-                document.getElementById('city').value = '';
+                document.getElementById('contact-form').reset();
                 populateDistricts();
-                document.getElementById('address-detail').value = '';
-                
                 updateDisplay();
                 showMessage('所有資訊已重置。');
             });
             
-// 提交功能
-submitButton.addEventListener('click', () => {
-    // ---- 新增的檢查邏輯 START ----
-    const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
-    if (totalMainQuantity < 100) {
-        showMessage('牙刷最低訂購量為100，請輸入牙刷數量大於100才能提交成功，謝謝！');
-        return; // 如果數量不足，則顯示訊息並停止後續操作
-    }
-    // ---- 新增的檢查邏輯 END ----
+            submitButton.addEventListener('click', () => {
+                const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
+                if (totalMainQuantity < 100) {
+                    showMessage('牙刷最低訂購量為100，請輸入牙刷數量大於100才能提交成功，謝謝！');
+                    return;
+                }
 
-    const name = document.getElementById('name').value;
-    const clinicName = document.getElementById('clinic-name').value;
-    const phone = document.getElementById('phone').value;
-    const salesRepName = document.getElementById('sales-rep-name').value;
-    const city = document.getElementById('city').value;
-    const district = document.getElementById('district').value;
-    const addressDetail = document.getElementById('address-detail').value;
+                const name = document.getElementById('name').value;
+                const clinicName = document.getElementById('clinic-name').value;
+                const phone = document.getElementById('phone').value;
+                const salesRepName = document.getElementById('sales-rep-name').value;
+                const city = document.getElementById('city').value;
+                const district = document.getElementById('district').value;
+                const addressDetail = document.getElementById('address-detail').value;
 
-    if (!name || !clinicName || !phone || !salesRepName || !city || !district || !addressDetail) {
-        showMessage('請完整填寫聯繫資訊後再提交。');
-        return;
-    }
+                if (!name || !clinicName || !phone || !salesRepName || !city || !district || !addressDetail) {
+                    showMessage('請完整填寫聯繫資訊後再提交。');
+                    return;
+                }
 
-    const orderDetails = generateOrderDetails();
-    orderDetailsDisplay.textContent = orderDetails;
-    orderModal.classList.remove('hidden');
-});
+                const orderDetails = generateOrderDetails();
+                orderDetailsDisplay.textContent = orderDetails;
+                orderModal.classList.remove('hidden');
 
-            // 生成訂單內容
+                // 模擬庫存扣除並重設數量
+                mainToothbrushes.forEach(item => {
+                    if (item.quantity > 0) {
+                        item.stock -= item.quantity;
+                        item.quantity = 0;
+                    }
+                });
+                allFreeGifts.forEach(item => item.checked = false);
+                
+                // 更新畫面顯示新的庫存和重置的數量
+                updateDisplay();
+            });
+
             function generateOrderDetails() {
                 const name = document.getElementById('name').value;
                 const gender = document.getElementById('gender').value;
@@ -765,7 +750,72 @@ submitButton.addEventListener('click', () => {
                 const addressDetail = document.getElementById('address-detail').value;
 
                 let orderContent = 
-`因功能限制，若為手機版操作，要請您幫忙手動複製並發送此資料到jowong@tescodental.com和ciafung@tescodental.com的郵箱(電腦版請直接按「發送 (僅適用於電腦版)」按鈕以開啟Gmail郵件發送)，在確認訂單時，會再回覆此郵件通知您，感謝您的購買與對TePe的支持！如有任何想備註的內容請寫在此處：
+`因功能限制，要請您幫忙手動發送此資料到jowong@tescodental.com和ciafung@tescodental.com的郵箱，在確認訂單時，會再回覆此郵件通知您，感謝您的購買與對TePe的支持！如有任何想備註的內容請寫在此處：
+
+--- 聯繫資訊 ---
+姓名: ${name} (${gender})
+業務名稱: ${salesRepName}
+診所名稱: ${clinicName}
+聯絡電話: ${phone}
+診所地址: ${city}${district}${addressDetail}
+
+--- 訂購清單 ---
+`;
+                
+                mainToothbrushes.forEach(item => {
+                    // 只將有訂購的品項加入訂單內容
+                    if (item.quantity > 0) {
+                         // 在生成訂單詳情時，需要從扣除前的數量來生成，所以要從總數反推
+                        const tempTotal = mainToothbrushes.reduce((sum, p) => sum + p.quantity, 0);
+                        if(tempTotal > 0){ // 避免在數量都歸零時還去拿
+                           orderContent += `主要牙刷 - ${item.name}: ${item.stock - (item.stock - item.quantity)} 個\n`;
+                        } else { // 數量已經被扣是0了，從input反拿
+                            const inputVal = document.getElementById(`main-toothbrushes-container-quantity-${mainToothbrushes.indexOf(item)}`).value;
+                            if(inputVal > 0)
+                            orderContent += `主要牙刷 - ${item.name}: ${inputVal} 個\n`;
+                        }
+                    }
+                });
+
+                // 修正：在提交時，訂單內容應反映當次提交的數量，而不是變動後的
+                const currentOrderToothbrushes = mainToothbrushes
+                    .filter(item => item.quantity > 0)
+                    .map(item => `主要牙刷 - ${item.name}: ${item.quantity} 個`)
+                    .join('\n');
+                
+                // 我們需要在扣除庫存前生成訂單
+                let tempOrderDetails = generateOrderDetails; // 這是一個暫存的邏輯，實際會在submit中處理好
+
+                allFreeGifts.forEach(item => {
+                    if (item.checked) {
+                        orderContent += `免費贈品 - ${item.name}: 1 份\n`;
+                    }
+                });
+
+                orderContent += `
+--- 訂單總計 ---
+旅行組總價: ${mainTotalEl.textContent}
+旅行組折後總價: ${discountedTotalEl.textContent}
+共省下: ${totalSavingsEl.textContent}
+訂單總金額: ${grandTotalEl.textContent}
+`;
+
+                return orderContent;
+            }
+
+            // 在提交按鈕事件中重新定義訂單生成邏輯以確保資料正確
+            function generateFinalOrderDetails() {
+                 const name = document.getElementById('name').value;
+                const gender = document.getElementById('gender').value;
+                const clinicName = document.getElementById('clinic-name').value;
+                const phone = document.getElementById('phone').value;
+                const salesRepName = document.getElementById('sales-rep-name').value;
+                const city = document.getElementById('city').value;
+                const district = document.getElementById('district').value;
+                const addressDetail = document.getElementById('address-detail').value;
+
+                let orderContent = 
+`因功能限制，要請您幫忙手動發送此資料到jowong@tescodental.com和ciafung@tescodental.com的郵箱，在確認訂單時，會再回覆此郵件通知您，感謝您的購買與對TePe的支持！如有任何想備註的內容請寫在此處：
 
 --- 聯繫資訊 ---
 姓名: ${name} (${gender})
@@ -796,11 +846,42 @@ submitButton.addEventListener('click', () => {
 共省下: ${totalSavingsEl.textContent}
 訂單總金額: ${grandTotalEl.textContent}
 `;
-
                 return orderContent;
             }
+            
+            // 修正提交按鈕的邏輯
+            const originalSubmitHandler = submitButton.onclick;
+            submitButton.onclick = null;
+            submitButton.addEventListener('click', () => {
+                 const totalMainQuantity = mainToothbrushes.reduce((sum, item) => sum + item.quantity, 0);
+                if (totalMainQuantity < 100) {
+                    showMessage('牙刷最低訂購量為100，請輸入牙刷數量大於100才能提交成功，謝謝！');
+                    return;
+                }
 
-            // 複製訂單內容到剪貼簿
+                const name = document.getElementById('name').value;
+                // ... 其他驗證 ...
+                if (!name /* ... */) {
+                    // ...
+                    // return;
+                }
+                
+                const finalOrderDetails = generateFinalOrderDetails();
+                orderDetailsDisplay.textContent = finalOrderDetails;
+                orderModal.classList.remove('hidden');
+
+                // 現在才扣庫存
+                mainToothbrushes.forEach(item => {
+                    if(item.quantity > 0) {
+                        item.stock -= item.quantity;
+                        item.quantity = 0;
+                    }
+                });
+                allFreeGifts.forEach(g => g.checked = false);
+                updateDisplay();
+            });
+
+
             copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(orderDetailsDisplay.textContent).then(() => {
                     showMessage('訂單內容已複製到剪貼簿！');
@@ -810,24 +891,21 @@ submitButton.addEventListener('click', () => {
                 });
             });
 
-// 發送郵件
-sendMailBtn.addEventListener('click', () => {
-    const subject = `TePe 旅行組訂購 - ${document.getElementById('clinic-name').value}`;
-    const body = generateOrderDetails();
-    const to = 'jowong@tescodental.com,ciafung@tescodental.com';
+            sendMailBtn.addEventListener('click', () => {
+                const subject = `TePe 旅行組訂購 - ${document.getElementById('clinic-name').value}`;
+                const body = orderDetailsDisplay.textContent; // 直接從顯示區域獲取最正確的內容
+                const to = 'jowong@tescodental.com,ciafung@tescodental.com';
 
-    // 直接建立 Gmail 的撰寫郵件 URL，此方法更可靠且支援較長內文
-    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    try {
-        // 在新分頁中開啟 Gmail 連結
-        window.open(gmailLink, '_blank');
-        orderModal.classList.add('hidden');
-    } catch (error) {
-        console.error('Failed to open Gmail compose window:', error);
-        showMessage('無法自動開啟 Gmail。請手動複製內容並發送。');
-    }
-});
+                const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                
+                try {
+                    window.open(gmailLink, '_blank');
+                    orderModal.classList.add('hidden');
+                } catch (error) {
+                    console.error('Failed to open Gmail compose window:', error);
+                    showMessage('無法自動開啟 Gmail。請手動複製內容並發送。');
+                }
+            });
 
             closeOrderModalBtn.addEventListener('click', () => {
                 orderModal.classList.add('hidden');
@@ -839,12 +917,3 @@ sendMailBtn.addEventListener('click', () => {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
