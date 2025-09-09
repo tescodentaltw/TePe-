@@ -882,14 +882,23 @@
             });
 
 
-            copyBtn.addEventListener('click', () => {
-                navigator.clipboard.writeText(orderDetailsDisplay.textContent).then(() => {
-                    showMessage('訂單內容已複製到剪貼簿！');
-                }).catch(err => {
-                    console.error('無法複製:', err);
-                    showMessage('無法複製內容，請手動選取複製。');
-                });
-            });
+copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(orderDetailsDisplay.textContent).then(() => {
+        // 成功時，暫時改變按鈕文字作為提示
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = '✓ 已複製成功！';
+        copyBtn.disabled = true; // 暫時禁用按鈕避免重複點擊
+
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.disabled = false;
+        }, 2000); // 2秒後恢復
+    }).catch(err => {
+        // 失敗時，仍然彈出提示窗
+        console.error('無法複製:', err);
+        showMessage('無法複製內容，請手動選取複製。');
+    });
+});
 
             sendMailBtn.addEventListener('click', () => {
                 const subject = `TePe 旅行組訂購 - ${document.getElementById('clinic-name').value}`;
@@ -917,5 +926,6 @@
     </script>
 </body>
 </html>
+
 
 
